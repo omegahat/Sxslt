@@ -1,0 +1,14 @@
+Package: Sxslt
+Version: 0.91-1
+Date:    2011/11/10
+Title: R extension for libxslt
+Author:  Duncan Temple Lang 
+Depends: R (>= 1.3.0), methods
+Imports: XML, methods
+Maintainer: Duncan Temple Lang <duncan@wald.ucdavis.edu>
+Description: A package that provides a) facilities for using XSL within R to 
+   transform XML documents via XSL, and b) an  extension module for libxslt, the XML-XSL document translator,
+  that allows XSL templates to call R functions from XSL. This is  therefore
+  a bi-directional interface between R and XSL, specifically libxslt.
+License: GPL | BSD
+URL:  http://www.omegahat.org/Sxslt,  http://www.omegahat.org

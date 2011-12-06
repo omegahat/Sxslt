@@ -1,0 +1,277 @@
+\input{XMLMacros}
+
+@ The Sxslt package can be used in two different ways:
+calling top-level XSLT facilities from within S,
+and calling S functions from within XSLT rules.
+
+The first of these allows one to use XSLT facilities from within S
+code or an interactive R session to process files, XML strings or
+internally stored XML documents in the form of libxml trees and output
+the results to a file, an S string or an internal tree.  This gives
+the power of XSLT to S which can work at different levels and
+essentially provides a simple way to make a more flexible front-end to
+XSLT than typically provided by stand-alone transformers.  (This code
+can be readily modified to do this in S-Plus also.)
+
+The second approach allows one to write XSLT rules that call S
+functions and this makes it easy to both use S's large existing
+functionality and also to automatically create dynamic statistical
+content in a document.
+
+When calling XSLT from within S, one can also register S functions
+with the XSLT engine.  In this way, S calls XSLT and the XSLT
+processing engine evaluates templates and rules which can call back to
+R.
+
+A discussion of using S within XSLT to implement rules, etc.  is given
+elsewhere. (See \url{http://www.omegahat.org/SXalan} and other places
+(which ones?).)  In the remainder of this document, we describe the
+facilities for calling XSLT from within S.
+
+
+\section{The Basics}
+At the simplest level, we can use S's ability to call XSLT
+functionality to provide a more convenient interface than
+\executable{xsltproc} and other XSL transformers.  We can use the S
+function \SFunction{xsltApplyStyleSheet} to apply an XSL sheet in a
+file to an XML file and then save the resulting document to a file.
+To do this, we give the name of the XML document and the name of the
+XSL file to \SFunction{xsltParseStyleSheet}.
+Then we use a method for the 
+\SFunction{saveXML} function (found in the XML package)
+to write the resulting document to a file.
+<<>>=
+ doc <- xsltApplyStyleSheet(xmlFileName, xslFileName)
+
+ library(XML)
+ saveXML(doc, "output.xml")
+
+
+@ Note that the XML and XSL input files need not be local files.
+Instead, they can actually be either URIs accessible via HTTP or FTP,
+or strings containing the XML/XSL content.
+Similarly, rather than writing the output from
+applying the style sheet to a file, 
+we can also access it directly within S.
+This is useful if we want to display
+it directly from within S, e.g. in an HTML (see RGtk)
+or combine it with other text.
+To do this, we use  \SFunction{saveXML}
+again, but do not specify the name of an output
+file, e.g.
+<<>>=
+ txt <- saveXML(doc)
+
+
+@ Suppose that we want to apply a particular style sheet to several
+XML files.  Rather than re-reading the XSL file each time, we can read
+it just once and then apply it multiple times.
+We use \SFunction{xsltParseStyleSheet} to read the XSL file
+and return a reference to the internally stored data structure.
+
+<<>>=
+sh <- xsltParseStyleSheet(xslFile)
+docs <- list()
+for(i in xmlFileNames) {
+  docs[[i]] <- xsltApplyStyleSheet(i, sh)
+  saveXML(doc)
+}
+
+@ 
+This approach obviously saves time (and potentially memory)
+since the XSL file does not need to be read and processed
+each time. This is especially useful if the XSL file is located
+remotely.
+
+@ 
+\subsection{XSL Parameters}
+XSL supports the concept of parameters which allow one to customize or
+parameterize a style sheet at run-time with auxillary values specified
+outside of the sheet.  For example, suppose we have an
+XSL sheet that can extract a single variable
+from a data set represented in an XML format.
+Rather than hard-code the name of the variable
+in the sheet and require the user to copy the file and change the
+name of the variable of interest before applying
+the sheet, we can specify the  variable name
+as an XSL parameter when running XSLT.
+
+XSL parameters are essentially name-value pairs, and each value is
+given as a string. (One has to be careful to quote literal string
+values as "'value'".)  They can be passed from S to libxslt in the
+call to \SFunction{xsltApplyStyleSheet} via the $\ldots$
+mechanism. One specifies parameters as \verb+name=value+.  The
+function takes care of converting each value to a string.  And then
+they are passed on to libxslt.
+
+<<>>=
+
+xsltApplyStyleSheet("http://www.ggobi.org/data/flea.xml", 
+                    "http://www.ggobi.org/XSL/variableHelp.xsl", variableName="'tars1'")
+
+@ 
+Note the extra quote characters within the value of
+the \code{variableName} parameter.
+
+
+@
+\section{Creating XML in S and using XSLT}
+In some cases, it is natural to create XML
+content in S and then want to use
+an existing XSL document to transform it.
+The XML package provides several
+facilities for creating XML in different formats:
+to files, strings and an internal representation.
+One can use \SFunction{xmlTree}
+to create the output stream and then
+add the content to that.
+What this does is to create an internal libxml
+document, and this can then be handed directly to
+\SFunction{xsltApplyStyleSheet} as the XML document (first argument).
+
+Let's consider an example in which we create a very simple XML document.
+<<>>=
+require(XML)
+tt <- xmlTree()
+tt$addTag("test", close = FALSE)
+tt$addTag("title", "My title")
+tt$closeTag()
+
+ # take a look at it in `human readable' form
+cat(saveXML(tt$value()))
+
+@ 
+<<>>=
+<?xml version="1.0"?>
+<test>
+  <title>My title</title>
+</test>
+
+@ 
+Now we can use the \file{generic.xsl} 
+style sheet in the \dir{examples} directory
+to process this and convert it into a simple HTML document.
+
+<<>>=
+> dd <- xsltApplyStyleSheet(tt$value(), system.file("examples", "generic.xsl", package = "Sxslt"))
+> saveXML(dd)
+[1] "<?xml version=\"1.0\"?>\n<h1>My title</h1>\n"
+
+
+
+@ 
+\section{S functions in XSL}
+XSL is a convenient mechanism for transforming documents. However it
+can be akward to program and it provides very limited functionality
+(by design).  In some contexts, it is easier to use another
+programming language such as S, Python or Java, to manipulate an XML
+document and perform a transformation than using XSL.  The XML package
+in S makes this reasonably easy for certain types of documents and
+transformations. But then we are responsible for using that language
+to do the entire processing.  However, we don't have to abandon XSL entirely and
+give up many of its benefits or existing style sheets.  Firstly, we
+might use one of these higher level languages to read the entire
+document and pass chunks of it to XSL.  For example, we might loop
+over the chapters in a document and pass only the ones a user wants 
+XSL to process using DocBook or the like.  This just provides a simple
+way to integrate external data without having to modify XSL files or
+write them to take parameters which is not always trivial depending on
+the data.
+
+A more important use of a programming language arises when more
+complex functionality is needed in the XSL. For example, if we need to
+do regular expression matching, or separate strings, etc.  XSL does
+not provide support for this.  We can extend XSLT with these
+facilities. Perhaps the simplest way to do this in our context is to
+tell XSLT about S functions (either built-in or user-created
+functions).  We can use \SFunction{registerXSLFunction} to make an S
+function available for use within a style sheet.
+
+Let's take a look at a very simple example.  Within an XML document,
+we want to actually compute the value of the square root of a number.
+Clearly, XSL has no reason to provide this as a built-in facility, and
+obviously S can do it with ease.
+So we tell XSLT about S's \SFunction{sqrt} function
+with the following command 
+<<>>=
+registerXSLFunction("sqrt", sqrt)
+
+@ 
+The first argument is the name by which the function
+is known to XSL.
+The second argument is the function itself.
+In this case, this is redundant since the name
+in S and XSL will be the same. So we could simply
+call
+<<>>=
+registerXSLFunction("sqrt")
+
+@ 
+and the \SFunction{registerXSLFunction}
+will retrieve the function in S using that name.
+
+
+To call the function from XSL, we merely use it in an XSL rule
+such as
+<<>>=
+<xsl:template match="sqrt">
+ sqrt: <xsl:value-of select="r:sqrt(number(.))" />
+</xsl:template>
+
+@ Note that we refer to it using the XSL namespace prefix \code{r}.
+This is because the registration of the S function is done into a
+special name space to differentiatee it from others and avoid potential name
+conflicts.
+
+When this rule is invoked, it takes the content of the \XMLTag{sqrt}
+element and converts it to a number.  Then it calls the
+\SFunction{sqrt} function in S which evaluates the result and returns
+it to XSL as a number. XSL then inserts that value into the 
+newly generated document due to the \XSL{value-of} instruction.
+
+\subsection{}
+We needn't register all the S functions if we don't want to.
+Instead, we can use a generic invocation mechanism
+from XSL in which we specify the name of the function
+to invoke and then the arguments to that function.
+For example
+<<>>=
+<xsl:template match="date">
+ date: <xsl:value-of select="r:call('date')" />
+</xsl:template>
+
+<xsl:template match="lm">
+<i class="output"><xsl:value-of select="r:call('ff', string(@y), string(@x))"/></i>
+</xsl:template>
+
+@ 
+Of course, we need the \XSLFunction{call} function to be registered
+with XSL. We could do this using \SFunction{registerXSLFunction}.
+However, the built-in initialization mechanism
+registers this and other  basic functionality when it is called.
+One can invoke this using the S command
+<<>>=
+.C("R_registerXSLTModule", TRUE)
+
+@ 
+This provides the following
+XSL functions:
+init, call, eval, source, register, exists and library.
+\XSLFunction{init} is not needed when running XSLT within S.
+It is used when running S inside XSLT to start the R engine.
+\XSLFunction{call} allows one to invoke an S function
+by giving its name.
+\XSLFunction{register} allows one to register an S function
+from within XSL and is equivalent to \SFunction{registerXSLFunction}
+in S.
+The others do the same as their S equivalents.
+
+@
+The output is 
+<<>>=
+[1] "<HTML><body>\n\n sqrt: 3\n\n\n date: Tue Jun  4 10:55:10 2002\n</body></HTML>\n"
+
+
+@ 
+<<>>=
+.C("registerRModule")

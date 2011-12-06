@@ -1,0 +1,7 @@
+DEBUG=-g
+# defines from us.
+SXSLT_DEFINES=-DXSL_IN_R_ONLY=1
+PKG_CPPFLAGS=$(DEBUG) -D_R_=1 -DUSE_R=1 ${SXSLT_DEFINES} -I$(R_HOME)/include $(XSLT_CFLAGS) -I$(LIB_XSLT)/include  -I$(LIB_XML)/include -I$(LIB_ICONV)/include
+#PKG_LIBS=$(R_SHLIB_LINK) @XSLT_LIBS@ @XSLT_CONFIG_LIBS@
+PKG_LIBS=-L${LIB_XSLT}/bin -lexslt -lxslt -L$(LIB_XML)/bin -lxml2
+# @XSLT_LIBS@ @XSLT_CONFIG_LIBS@

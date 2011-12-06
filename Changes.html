@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<h1></h1>
+
+<h2>Version 0.9-1</h2>
+<dl>
+ <dt> 
+ <li> Minor fixes to DESCRIPTION and NAMESPACE re. methods.
+ <dd>
+</dl>
+
+
+
+
+
+<h2>Version 0.9-0</h2>
+<dl>
+
+ <dt>
+ <li> Added an XSL extension function callI in the R XSL namespace
+    which guarantees returning the R object exactly as is and not
+    converting the value to an XSL data type. This can then be 
+    passed back to R in a subsequent R function call from XSL.
+ <dd>
+
+
+ <dt>
+ <li> Allow complex R objects to be passed from R to XSL and preserved as R objects
+   to be passed back to R in subsequent function calls. This allows for 
+   sequential calls
+ <dd>
+
+ <dt>
+ <li>  Introduced &lt;r:eval&gt; element in XSL for evaluating R code.
+ <dd>
+     
+ <dt>
+ <li> Registered the as(), length(), and class() R functions as  XSL functions so one can call 
+    as r:as( value, "Rtype"), r:length(value), r:class(value) from within XSL.
+ <dd> Primarily used to convert the result from an earlier call to R.
+
+ <dt>
+ <li> Methods for XPathNodeSet for unlist(x) and x[] to retrieve the values.
+ <dd>
+
+ <dt>
+ <li>  Access to attribute nodes is improved rather than being
+       returned as of class "XMLUnknownInternalNode"
+ <dd>
+
+</dl>
+
+
+
+<h2>Version 0.8-1</h2>
+<dl>
+  <dt>
+  <li> Added a status field to the XMLInternalXSLTDocument returned by
+      xsltApplyStyleSheet.
+       This gives us the state of the XSLT context used in the
+      transformation, if this is available. The values are NA, OK = 0,
+       ERROR = 1, STOPPED = 2.
+  <dd>
+</dl>
+
+<h2>Version 0.8-0</h2>
+<dl>
+
+  <dt>
+  <li> getTemplate() now reports the file and line number for the node.
+  <dd>
+
+  <dt>
+  <li>  [ method for XPathNodeSet to allow access to a subset of the
+        nodes in the set.  The result is not an XPathNodeSet, but a
+        list containing the specified nodes.  Only works for numeric
+        indices, i.e. not names.
+        
+  <dd>
+  
+  <dt>
+  <li>  processXSLXInclude() function for explicitly resolving
+        an XInclude node.
+  <dd>
+
+  <dt>
+  <li>  Added a duplicate parameter to XPathNodeSet()  to control
+      whether   nodes are "cloned"/duplicated when being inserted into the
+      node set.
+  <dd>
+      
+  <dt>
+  <li> Reconciled two definitions of XPathNodeSet and the C code that
+       manipulated them.
+  <dd>
+  
+  <dt>
+  <li> Added xslGlobalVariableNames()
+  <dd>
+  
+  <dt>
+  <li> Added xslWarning, xslError and xslStop
+  <dd>
+  
+  <dt>
+  <li> Added xsltGetCurrentTemplate() &amp; xsltGetCurrentInputNode()
+       as  accessors to some of the information available in the
+       XSL transformation context.
+  <dd>
+  
+  
+  <dt>
+  <li> The XSL document() function passes an XMLInternalNode object to
+       R within an XPathNodeSet object.
+  <dd>
+  
+  <dt>
+  <li> r:call() handles R name space qualifiers in the function name,
+       e.g.  Sxslt::parseEval or Sxslt:::parseEval.
+  <dd>
+  
+  <dt>
+  <li> Quoting of params is done only on characters, with other types
+      (numbers and logicals) converted to/left as numbers.
+  <dd>
+  
+  <dt>
+  <li> getTemplate() function allows one to explore what the XSL
+       engine will use for a given node.
+  <dd>
+  
+  <dt>
+  <li> When an R function called from XSL that returns a node, if that
+       node is from a different document than the target/output
+       document, it will be reparented to that target document.
+
+  <dd>
+  
+  <dt>
+  <li>  Added xsltGetXMLSourceNode() and xsltGetXSLNode() to provide
+      access to the  XML node being processed and the XSL instruction
+       (and hence template) in effect. This allows the R programmer
+       to generate some reflection information, especially useful for debugging.
+  <dd>
+
+  <dt> 
+  <li> Support in xsltApplyStylesheet for getting profile information about the calls to the XSL style
+       rules including the number of calls and the time taken and the
+       mode in which the rule was called.
+  <dd>
+
+  <dt>
+  <li> Support for controlling XInclude on the processed document
+      (before applying the XSL style sheet).
+  <dd>
+  
+  <dt>
+      XPathNodeSet made into an S4 class to avoid issues with
+      setOldClass and methods for length in a namespace.
+  <dd>
+      
+  <dt>
+  <li> Add setXSLTFunctions for "brute force" control over the
+       R functions registered  for registration with XSL when
+       an R extension in XSL is initialized. This allows one
+       to manage the list of registered functions, including
+       removing entries that one has added for a particular
+       application of a style sheet.
+  <dd>
+
+  <dt>
+  <li> Renamed includeStyleSheets() to importStyleSheets().
+  <dd>
+
+  <dt>
+  <li> (Pending) Function to read style sheet from the XML document
+       being processed and merge it with additional style sheet(s)
+       specified in xsltApplyStyleSheet(). This allows for local
+       templates in the XML file.
+  <dd>
+</dl>
+
+<h2>Version 0.7-0</h2>
+
+<dl>
+  <dt>
+  <li> Added support for defining new XSLT extensions, i.e. ones with
+       different namespaces and registering functions for a particular
+       namespace identified either by the prefix or the URI.
+  <dd> See registerXSLTExtension() and inst/examples/extension.xsl
+        and extension.R.
+
+  <dt>
+  <li>  xsltApplyStyleSheet accepts multiple style sheet file names
+        and the subsequent ones are import'ed into the first style
+        sheet.
+  <dd>  This is a convenience mechanism to avoid the need to create
+        a separate stylesheet document that merely lists the files to
+        import.  includeStyleSheets is the function that does the
+        actual operation and can handle both import and include merging.
+
+  <dt>
+  <li>  A function being added for registration with the XSL engine
+        can be of (S3) class can have class "ClosureGenerator"
+        (typically created with the function closureGenerator())
+        and such a function will be invoked and the list of functions it
+        returns will be registered, not the original function itself.
+        This allows for groups of functions with a shared environment
+        to be created for each XSL processing task/"session"
+        and so avoid shared "non-local" variables.
+  <dd>
+      
+</dl>
+
+
+<h2>Version 0.6-0</h2>
+
+<dl>
+
+  <dt>
+  <li> Functions to generate content in the  output  document directly
+       from within R functions, e.g. apply a template to a node, 
+  <dd>
+  
+  <dt>
+  <li> Installation uses '-enable-R-only' as default so does not try
+      to build the stand-alone Sxsltproc.  To build that, use
+<pre>      
+        R CMD INSTALL --configure-args='--enable-R-only=no' Sxslt
+</pre>
+  <dd>
+  
+  <dt>
+  <li> Allow XSL content to be given as a string rather than a file  name.
+      This allows one to work with dynamically constructed XSL files.
+  <dd>
+
+  <dt>
+  <li> getXSLVariables() function for accessing the values of param
+       and variable elements in XSL.
+  <dd>
+
+  <dt>
+  <li> Additional built-in/pre-registered functions: <i>nullEval()</i> (to
+      ignore result) and <i>evalWithOutput()</i> which returns the value
+      from calling capture.output() when evaluating the R command.
+  <dd>
+
+
+      
+  <dt>
+  <li> Improved support for returning XML nodes from R functions which
+       are inserted into the result document or left as elements of a
+       node set.
+  <dd>
+      
+  <dt>
+  <li> r:eval() function in XSL now evaluates the expression in the
+      global environment (globalenv()) which should simplify finding
+      variables assigned in one call and referenced in another.
+  <dd>
+
+  <dt>
+  <li> Functions that are of class XSLTContextFunction are passed a
+       reference to the xmlXPathParserContext as the first argument.
+       The default is not to make this available, but it can be used
+       within R to access and manipulate the XSLT process and contents
+       of the tree. Use the function xsltContextFunction() to
+       make convert a regular function to one of this type.
+  <dd>
+  <dt>
+  <li>  Added mechanisms for returning XML nodes. We can return a
+      XMLInternalDocument (via xmlTree()$value()), or an
+      XMLInternalNode (e.g. xmlRoot(xmlTree()$value()) or creating
+      the nodes directly) and node set (xmlXPathNodeSet instance).
+  <dd>
+  <dt>
+  <li>  [ method for XPathNodeSet is now gone and [[ is to be used.
+  <dd>
+</dl>
+
+<h2>Version 0.5-4</h2>
+<dl>
+  <dt>
+  <li> Checks whether Rembedded.h is in the R include directory or not
+      and does a #include if it is, and doesn't if it is not present,
+      i.e. in versions of R earlier than R-2.4.0
+  <dd>
+</dl>
+
+
+<h2>Version 0.5-3</h2>
+<dl>
+  Changes to the way we use encoding when saving an XML document.
+  This is thanks to the problem Jörg Beyer raised. (See omega-help,
+  Sep. 1 06.)
+  <dt>
+  <li> saveXML() when writing to a string does not assume an ASCII encoding.
+  <dd>
+  
+  <dt>
+  <li> Added an encoding argument to saveXML (here and in the generic in the
+      XML package) so that the caller can specify the type of encoding
+  <dd>
+</dl>
+
+<h2>Version 0.5-2</h2>
+<dl>
+  <dt> The xsl: prefix in the fix for 0.5-1 causes problems if the
+      xmlns:xsl refers to a different URI than libxslt's view of
+      things. With libxslt-1.1.16, this fails to work unless we remove
+      the xsl: prefix.
+  <dd>
+
+  <dt> The -o file option for Sxsltproc causes a segmentation fault
+      for  libxslt-1.1.15. This is fixed in libxslt-1.1.16.
+  <dd> Thanks to Naras Balasubramanian ("Naras") for identifying this.
+</dl>
+
+<h2>Version 0.5-1</h2>
+<dl>
+  <dt> Update of some XSL files in the examples to include the
+      all-important
+         xsl:extension-element-prefixes="r"
+       declaration in the xsl:stylesheet element.
+  <dd>  Without this, xslt cannot find the relevant registered
+       functions in the R module.
+</dl>
+
+<h2>Version 0.5-0</h2>
+<dl>
+  <dt>
+  <li> Ability to set an R function that is called each time the XSLT
+       extension is initialized (i.e. for each application of a
+       stylesheet that requires it).  This function can register
+       extension functions and generally do any initialization
+       it wants. This happens after the basic functions  are
+       registered.  To have any effect, this is where 
+       registerXSLFunction() should be called.
+       Calling registerXSLFunction() outside of this
+       will either raise an error or have no effect
+       by working on a unused context.
+      
+  <dd>
+
+  <dt>
+  <li> Mechanism for pre-registering R functions that will be
+       registered with the XSLT extension module each time it is
+       initialized.  Use addXSLTFunctions() rather than
+       registerXSLFunction() to specify these.
+  <dd>
+      
+  <dt>
+  <li> Added a name space (NAMESPACE).
+  <dd>
+
+  <dt>
+  <li> Now depends on the <a href="http://www.omegahat.org/RSXML">XML
+      package</a> due to the need to export a method for
+       <code>saveXML()</code>  which requires the generic to be defined.
+  <dd>
+      
+  <dt>
+  <li> Added classes to xsl sheet and XMLInternalDocument.
+  <dd>
+
+  <dt>
+  <li> When calling XSLT from R, we can now use registered R functions
+       in the XSL.  
+  <dd> This has been possible from the beginning but there were issues
+       such as avoid reinitializing R each time.
+      
+  <dt>
+  <li> Off-by-one error in dealing with parameters that caused a
+       segmentation fault in xsltApplyStyleSheet().
+  <dd>
+</dl>
+
+<h2>Version 0.4-1</h2>
+<dl>
+
+ 
+  <dt>
+  <li>  Added libexslt to the list of libraries used at link time.
+  <dd>  Needs more work in the configuration script.
+  
+  <dt>
+  <li>  Updated the configuration to work better if we want
+      --enable-R-only,
+         i.e. calling XSLT from R only and not R from xsltproc.
+  <dd>  The source code for libxslt is no longer necessary in this case.
+  
+  <dt>
+  <li>  Changed email address, Web site references to UC Davis.
+  <dd>
+</dl>
+
+<h2>Version 0.4-1</h2>
+<dl>
+  <dt> Bug fix for saving to a string
+       (via <code>saveXML.XMLInternalXSLTDocument()</code>)
+</dl>
+
+<h2>Version 0.4</h2>
+<dl>
+  <dt> Some documentation in Docs/SxsltInS.pdf describes
+      using libxslt from within S.
+  <dd>
+  <dt> Can call Sxslt from within a regular R session,
+       i.e. embedding libxslt within S.
+  <dd> 
+
+  <dt>
+  <li> Annotated discussion examples
+  <dd>
+  <dt>
+  <li> Support for the "value" attribute of an XMLNode.
+  <dd>
+  <dt> Improvements to handling node sets in R
+       that are passed from XSL functions.
+  <dd>
+</dl>
+
+<h2>Version 0.3</h2>
+<dl>
+  <dt>
+  <li> New examples.
+  <dd> lm.xml, sqrt.xsl, sqrt.xml, literal.xsl.
+  <dt>
+  <li> Configuration changes
+  <dd>
+  <dt>
+  <li> Works with  <a href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxslt/">libxslt 1.0.7</a>
+  <dd> This version requires <a href="ftp://ftp.gnome.org/pub/GNOME/stable/sources/libxml/">libxml2-2.4.10</a>.
+</dl>
+
+<h2>Version 0.2.1</h2>
+<dl>
+  <dt> Configuration updates for Solaris and testing of XSLT_HOME, etc.
+  <dd>
+  <dt> Omit xsltUnregisterAllExtModules().
+  <dd>
+</dl>
+
+<h2>Version 0.2.0</h2>
+<dl>
+  <dt> Support for accessing the nodeset
+       and its internal elements:
+        nodes, children, attributes, etc.
+  <dd> All of these are provided as references to the underlying
+       C level objects in the libxslt/libxml libraries.
+</dl>
+<h2>Version 0.1.0</h2>
+<dl>
+  <dt> Initial release
+  <dd> 
+</dl>
+
+
+<hr>
+<address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Wed Nov  3 12:39:59 PDT 2010
+<!-- hhmts end -->
+</body> </html>

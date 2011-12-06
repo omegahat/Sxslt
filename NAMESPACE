@@ -1,0 +1,115 @@
+useDynLib(Sxslt)
+
+
+#importFrom(methods, show)
+
+#importFrom("base", "sapply")
+#importFrom(XML, saveXML) #, docName)
+import(XML)
+# Not allowed: importFrom(base, lapply) # , sapply, length)
+
+import(methods)
+
+export(saveXML)
+export(docName)
+
+export(registerXSLFunction)
+#export(nodeElements)
+export(xsltApplyStyleSheet, xsltParseStyleSheet)
+export(XSLParseEval, XSLParseEvalWithOutput, XSLNULLParseEval)
+export(XPathNodeSet)
+
+export(SxsltInitializationFunction, addXSLTFunctions, getXSLTFunctions, setXSLTFunctions, registerXSLTExtension)
+export(getXSLVariables)
+
+
+export(SxsltInitializationFunction, addXSLTFunctions, getXSLTFunctions, xsltContextFunction)
+
+exportClass(XSLStyleSheet)
+exportClass(XPathNodeSet)
+
+exportMethods("XSLParseEval")
+
+
+export(lapply)
+exportMethods("lapply")
+
+if(TRUE) {
+#export(length)
+#export(sapply, lapply)  
+  exportMethods("length")
+  exportMethods("sapply")
+  exportMethods(unlist)
+}
+
+#S3method(xsltApplyStyleSheet, XMLInternalDocument)
+#S3method(xsltApplyStyleSheet, default)
+exportMethods("xsltApplyStyleSheet") #, xsltApply)
+
+# S3method("$", XMLAttributes)
+# S3method("$", XMLNodeRef)
+# S3method(names, XMLAttributes)
+# S3method("[", XMLAttributes)
+
+
+S3method("[", XPathNodeSet)
+#S3method("[[", XPathNodeSet)
+S3method("[", XMLChildren)
+S3method("[[", XMLChildren)
+
+#S3method("saveXML", XMLInternalXSLTDocument)
+exportMethods(saveXML)
+
+export(xsltGetXMLSourceNode, xsltGetXSLNode)
+export(xsltInsert, xsltGetInsertNode, xsltGetOutputDocument, xsltGetInputDocument, xsltGetStyleSheet, xsltProcessNode,
+       xsltCallTemplate)
+exportMethods(coerce)
+
+exportClass("XMLXPathParserContext")
+
+export(xslGlobalParameterNames)
+
+export(closureGenerator)
+
+# export(multiApply)
+
+# Don't need to export
+#  export(readXSLProfileData)
+
+
+export(xslImportStyleSheets)
+
+export(libxsltVersion)
+
+
+# Don't need this as it is done internally.
+#  export(xsltCopyNodes)
+
+
+
+export(getTemplate) # createTransformContext
+
+exportClass(XSLTemplateDescription)
+exportMethods(docName)
+
+
+exportMethods(getTemplate)
+
+export(xslStop)
+
+exportClass("XSLTTransformContext")
+
+export(xsltGetCurrentTemplate, xsltGetCurrentInputNode)
+
+export(xslWarning, xslError)
+
+#importFrom(XML, processXInclude)
+S3method(processXInclude, XPathNodeSet)
+export(processXSLXInclude)
+
+export(toc.XSL)
+
+export(Sxsltproc, Rxsltproc)
+
+
+

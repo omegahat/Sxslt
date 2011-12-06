@@ -1,0 +1,6 @@
+#!/bin/sh
+
+#Rscript --silent Sxslt.R $@
+Rscript --silent -e "library(methods); library(Sxslt); Sxsltproc()"  $@
+
+

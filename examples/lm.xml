@@ -1,0 +1,79 @@
+<?xml version="1.0" ?>
+
+<test>
+
+<section>
+<title>The top of the document</title>
+This is an example of using initialization code in the document to
+establish the data for the R session within the document and then
+using it to do computations at different points within the document.
+
+<p />
+First we start with the data.  We load the Motor Trend car data in R.
+We don't want the output to be displayed in the document so we use a
+tag that will be recognized in the XSL file as containing code whose
+output is of no direct interest.
+<background>
+ data(mtcars)
+</background>
+
+Rather than define a new tag, we can use an attribute to indicate
+that the output should be discarded.
+<code invisible="true">
+ print("This is not included in the XML output")
+</code>
+
+<p/>
+
+Now we move onto some computations.  We will want to do several
+regressions and output the coefficients.  So we define a function that
+takes the names of the variables in question and performs the
+regression.  For the moment, the output is a simple string.  To do
+this, we again evaluate some S code whose output is not to be
+contained in the text.
+
+<background>
+<![CDATA[
+ff <<- function(y,x, data = "mtcars") {
+    l <- lm(as.formula(paste(y, x, sep="~")), data = get(data))
+    paste(c("a", "b"), round(coef(l),2), sep=" = ", collapse=", ")
+}
+"a"
+]]>
+</background>
+
+Now we are ready to use some of the computations.
+
+The correlation of the variables of interest is 
+<code>round(cor(mtcars$mpg, mtcars$cyl), 3)</code>
+
+The regression coefficients are <br/>
+<lm y="mpg" x="cyl" />
+
+</section>
+
+<section>
+<title>Graphics</title>
+We now turn to graphics.
+<code invisible="true">
+<![CDATA[
+  openPlot <<- function(name) {
+    fileName <- gsub("[$ ]", "_", paste(name, "png", sep="."))
+    png(fileName)
+    fileName
+  }
+  Hist <<- function(varName) {
+    x <- eval(parse(text=varName))
+    fileName <- openPlot(varName)
+    hist(x, xlab=varName)
+    dev.off()
+    fileName
+  }
+ TRUE
+]]>
+</code>
+<br/>
+<hist x="mtcars$mpg" />
+</section>
+
+</test>

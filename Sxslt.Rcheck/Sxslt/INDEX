@@ -1,0 +1,72 @@
+SxsltInitializationFunction
+                     Set an R function to be called each time
+                     the R extension module in XSLT is
+                     initialized
+Sxsltproc            R function mimicing shell command xsltproc
+XMLXPathParserContext-class
+                     Class representing the internal data
+                     structure for an XSL transformation
+XPathNodeSet         Methods for an XPathNodeSet reference
+XSLParseEval         Evaluate an S expression from an XSL
+                     string
+XSLStyleSheet-class
+                     Class "XSLStyleSheet" reference to a
+                     parsed, internal XSL style sheet
+XSLTTransformContext-class
+                     Class "XSLTTransformContext"
+XSLTemplateDescription-class
+                     Description of an XSL template
+[.XMLAttributes      Access attributes of XML Node
+[.XMLChildren        Get sub-nodes of an XML node
+addXSLTFunctions     Queue R functions to registered as XSL
+                     functions.
+closureGenerator     Programmatically create functions with a
+                     shared environment
+getTemplate          Find the template to process a node
+getXSLParams         Extract the top-level XSL parameters and
+                     default values in an XSL stylesheet
+getXSLVariables      Get the value of one or more
+                     top-level/global XSL parameters
+libxsltVersion       Query the version of the libxslt library
+                     in use.
+processXSLXInclude   Replace the XInclude with the contents to
+                     which it refers
+readXSL              Read an XSL document as an XML document,
+                     substituting import and include nodes with
+                     the contents of the referenced documents.
+registerXSLFunction
+                     Define an XSL extension function
+registerXSLTExtension
+                     Register a new XSLT extension namespace
+saveXML.XMLInternalXSLTDocument
+                     Serializes XSLT-processed document to a
+                     file or string
+toc.XSL              Get a table of contents of templates in an
+                     XSL document (and imports)
+xslError             R-level functions for signalling errors,
+                     warnings and terminating the XSL
+                     processing
+xslGlobalParameterNames
+                     Get the names of the top-level/global XSL
+                     parameters
+xslImportStyleSheets
+                     Import style sheets into an existing XSL
+                     style sheet
+xsltApplyStyleSheet
+                     Process XML document with XSLT stylesheet
+xsltCallTemplate     Allow R to invoke an XSL template
+xsltGetCurrentTemplate
+                     Query the active node or template
+xsltGetStyleSheet    Obtain a reference to the XML internal
+                     document object for the style sheet or the
+                     input XML document.
+xsltGetXMLSourceNode
+                     Get the active nodes in the XSL process
+xsltInsert           Tools for adding nodes to the the
+                     target/output document in an XSL
+                     transformation.
+xsltParseStyleSheet
+                     Read XSLT stylesheet into memory
+xsltProcessNode      Process a single XML node within the
+                     context of an XSL stylesheet and
+                     transformation

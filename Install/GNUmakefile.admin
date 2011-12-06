@@ -1,0 +1,51 @@
+createRPackage::
+include $(OMEGA_HOME)/Config/GNUmakefile.PackageConfig
+
+R_PACKAGE_SUBDIRS+= inst/bin
+
+MAN_FILES=$(shell find man -name '*.Rd')
+
+WRITEUPS=Docs/SxsltInS.pdf
+WRITEUPS=
+
+DOC_FILES=$(WRITEUPS) \
+          $(OMEGA_HOME)/Docs/OmegaTech.css $(OMEGA_HOME)/Docs/html.css \
+
+
+C_SRC_FILES=\
+  Converters.c Rsupport.c NodeSet.c Sxsltproc.c xsltproc.c XSLTInS.c
+
+LOCAL_HEADERS= Converters.h Rsupport.h
+
+C_INCLUDE_FILES=\
+  $(LOCAL_HEADERS) $(OMEGA_HOME)/include/Corba/RSCommon.h
+
+R_SRC_FILES=ClassDefs.S node.S nodeSet.S parseEval.S First.lib register.S Sxslt.S context.R closureGenerator.R \
+       importXSL.R profile.R params.R error.R xinclude.R \
+       readXSL.R toc.R  Sxsltproc.R
+
+R_SRC_FILES:=$(R_SRC_FILES:%=Src/%)   
+
+DEPENDS=Install/configure $(C_INCLUDE_FILES) $(C_SRC_FILES)  $(RD_HELP_FILES)
+
+DEPENDS+=$(DOC_FILES)
+
+include $(OMEGA_HOME)/Config/GNUmakefile.PackageRules
+
+
+Docs/%.html: Docs/%.xml
+	$(MAKE) -C $(@D) $(@F)
+
+man/%.Rd: man/%.xml
+	$(MAKE) -C $(@D) $(@F)
+
+
+createRPackage::
+	cp Install/Makefile.in $(R_WORK_PACKAGE)/src/
+#	cp Install/Sxsltproc.in $(R_WORK_PACKAGE)/inst/bin
+	cp inst/Sxsltproc inst/Sxsltproc.bat $(R_WORK_PACKAGE)/inst/bin/
+	cp Install/Makevars.in $(R_WORK_PACKAGE)/src/
+	cp Install/Makevars.win $(R_WORK_PACKAGE)/src/
+	cp Install/configure.win $(R_WORK_PACKAGE)/
+	cp -r examples/Homework $(R_WORK_PACKAGE)/inst/examples
+	cp -r tests $(R_WORK_PACKAGE)

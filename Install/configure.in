@@ -1,0 +1,174 @@
+AC_INIT(src/XSLTInS.c)
+
+PKG_NAME=Sxslt
+AC_SUBST(PKG_NAME)
+
+R_ONLY="yes"
+AC_ARG_WITH(xslt,[--with-xslt  directory containing the libxslt source.], XSLT_HOME=${with_xslt})
+AC_ARG_ENABLE(debug,[--enable-debug  directory containing the libxslt source.], XSLT_DEBUG=1)
+
+AC_ARG_ENABLE(R-only,[--enable-R-only  .], R_ONLY="yes")
+
+echo "R_ONLY = $R_ONLY"
+
+if test ! -r "${R_HOME}/lib/libR.so" && test ${R_ONLY} != "yes" ; then
+  echo ""
+  echo "          * Warning *"
+  echo "This package provides both a way to call libxslt from R and also R from libxslt."
+  echo "If you want to call R functions from a stand-alone xslt, you need to compile R"
+  echo "as a shared library and the re-install this package."
+  echo "Reconfigure and compile the R distribution to create R_HOME/bin/libR.so"
+  echo "Use the commands"
+  echo "    configure --enable-R-shlib ..."
+  echo "    make"
+  echo ""
+  echo "Alternatively, to avoid this message, if you only want to use XSLT from within R,"
+  echo "configure this package with the --enable-R-only flag, i.e."
+  echo "  R CMD INSTALL --configure-args='--enable-R-only' Sxslt" 
+  echo ""
+  echo ""
+  R_ONLY="yes"
+fi
+
+
+dnl no point in finding this.
+dnl XXX  Moved this up to here. Okay?
+AC_PATH_PROG(XSLT_CONFIG,xslt-config)
+
+if test -n "${XSLT_CONFIG}" && test -z "${XSLT_HOME}"; then
+
+ if test "$R_ONLY" != "yes" ; then
+  echo "Unfortunately, to compile this extension, we need additional header files"
+  echo "from the libxslt distribution that are not usually installed. Please specify"
+  echo "the location of the libxslt distribution using the --with-xslt='directory' flag"
+  echo "or by setting the environment variable XSLT_HOME."
+  exit 1;
+ fi
+
+ XSLT_CONFIG_CFLAGS='$(shell ${XSLT_CONFIG} --cflags)'
+ XSLT_CONFIG_LIBS='-lexslt $(shell ${XSLT_CONFIG} --libs)'
+fi
+
+
+AC_SUBST(XSLT_CONFIG)
+AC_SUBST(XSLT_CONFIG_CFLAGS)
+AC_SUBST(XSLT_CONFIG_LIBS)
+
+if test "$R_ONLY" != "yes" ; then
+
+if test -n "${XSLT_HOME}" ; then
+
+  if test ! -d "${XSLT_HOME}" ; then
+     echo "The value of --with-xslt flag (or the environment variable XLST_HOME) must be a directory"
+     echo "and should point to the top-level directory of the libxslt distribution."
+     echo "Instead of using --with-xslt, you can set the environment variable XSLT_HOME to point to the"
+     echo "relevant directory."
+     exit 1
+  fi
+
+  if test -n "${XSLT_CONFIG}" ; then
+     XSLT_LIBS='$(shell ${XSLT_CONFIG} --libs)' 
+  fi
+
+  if test -x ${XSLT_HOME}/xslt-config ; then
+     LOCAL_XSLT_CONFIG=${XSLT_HOME}/xslt-config
+     versionNumber=`${LOCAL_XSLT_HOME}/xslt-config --version`
+
+  fi
+
+  if test -r "${XSLT_HOME}/libexslt/libxslt.h" ; then
+
+    if test ! -r "${XSLT_HOME}/libexslt/libxslt.h" ; then
+      echo "We need to be able to find the file libexslt/libexslt.h to compile this extension"
+      echo "Please specify the location of the top-level directory of the libxslt distribution"
+      echo "using the --with-xslt='directory' flag"
+      exit 1
+    fi
+  fi
+
+  AC_PATH_PROG(XML_CONFIG,xml2-config)
+
+  if test -z "${XML_CONFIG}" ; then
+     echo "Need to find xml2-config"
+  fi
+
+  XML_CFLAGS="\$(shell ${XML_CONFIG} --cflags)"
+  XML_LIBS="\$(shell ${XML_CONFIG} --libs)"
+  XSLT_CONFIG_CFLAGS="-I${XSLT_HOME} ${XML_CFLAGS}"
+
+
+  if test -r "${XSLT_HOME}/libxslt/.libs/libxslt.so" ; then
+    XSLT_LIBS="-L${XSLT_HOME}/libxslt/.libs -lxslt ${XSLT_LIBS}"
+  else
+    echo "Cannot find ${XSLT_HOME}/libxslt/.libs/libxslt.so" 
+    exit 1;
+  fi
+
+  if test -r "${XSLT_HOME}/libexslt/.libs/libexslt.so" ; then
+    XSLT_LIBS="${XSLT_LIBS} -L${XSLT_HOME}/libexslt/.libs -lexslt ${XML_LIBS}"
+  else
+     echo "Cannot find ${XSLT_HOME}/libexslt/.libs/libexslt.so" 
+     exit 1;
+  fi
+else
+ if test "${R_ONLY}" != "yes" ;  then
+  echo "You must specify the location of the libxslt distribution"
+  echo "Use --with-xslt=<directory> or set the value of the environment variable XSLT_HOME."
+  exit 1
+ fi
+fi
+
+AC_SUBST(XSLT_LIBS)
+
+if test -z "${XSLT_HOME}" && test -z "${XSLT_CONFIG}" ; then
+ echo "You must specify where the libxslt source distribution is located on your machine."
+ echo "Give the directory via the --with-xslt=<dir> argument or the environment variable"
+ echo "XSLT_HOME"
+ exit 1
+fi
+
+
+fi  # end of it $R_ONLY != "yes"
+
+
+AC_SUBST(R_PACKAGE_DIR)
+AC_SUBST(INSTALL_DIR)
+
+AC_SUBST(XSLT_CONFIG)
+AC_SUBST(XSLT_HOME)
+
+if test -n "${XSLT_DEBUG}" ; then
+ XSLT_DEBUG="-DXSLT_DEBUG=1"
+fi
+AC_SUBST(XSLT_DEBUG)
+
+AC_SUBST(R_HOME)
+
+
+SXSLT_DEFINES=""
+
+AC_SUBST(SXSLT_DEFINES)
+
+
+if test "${R_ONLY}" != "no" ; then
+ R_SHLIB_LINK='-L$(R_HOME)/bin -lR'
+ SXSLT_DEFINES="${SXSLT_DEFINES} -DXSL_IN_R_ONLY"
+fi
+
+
+if test -r $R_HOME/include/Rembedded.h ; then
+ SXSLT_DEFINES="$SXSLT_DEFINES -DHAVE_R_EMBEDDED_H"
+fi
+
+
+AC_SUBST(R_SHLIB_LINK)
+
+AC_OUTPUT(src/Makefile cleanup src/Makevars) dnl inst/bin/Sxsltproc
+chmod +x cleanup
+
+if test "${R_ONLY}" = "yes" ; then
+ if test -r src/Makefile ; then mv src/Makefile src/Makefile-unused ; fi
+ if test -r src/xsltproc.c ; then mv src/xsltproc.c src/xsltproc.c-unused ; fi
+dnl mv src/Sxsltproc.c src/Sxsltproc.c-unused
+fi
+

@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!-- This is an example/prototype of a help file
+     for R that contains (or could contain) multiple
+     related help files with shared information.
+     There are top-level shared components such as the 
+     often repeated author and keyword information.
+     We can reference examples across different topics.
+     And we also have separate example sections for each
+     example, along with sections within an example to
+     provide a narrative, the code and output.
+     It also uses includes.
+   -->
+<helpArchive xmlns:dummy="http://www.r-project.org/Rd"
+	     xmlns:r="http://www.r-project.org"
+             xmlns:s3="http://cm.stat-bell.labs.com/stat/S3"
+	     xmlns:xi="http://www.w3.org/2003/XInclude">
+
+<!--<xi:include href="Sxslt.xml" parse="xml" xpointer="element(/help/authorInfo)">-->
+<!--Try <xi:include href="Sxslt.xml#xpointer(//authorInfo)"/>-->
+<xi:include href="Sxslt.xml" xpointer="element(/1)" >
+<xi:fallback>
+ <authorInfo>
+ <author>
+   <firstname>Duncan</firstname><lastname>Temple Lang</lastname>
+   <email>dtemplelang@ucdavis.edu</email>
+   <affiliation>Dept. of Statistics, University of California at Davis</affiliation>
+  </author>
+</authorInfo>
+<keywords>
+<keyword>IO</keyword>
+<keyword>programming</keyword>
+</keywords>
+</xi:fallback>
+</xi:include>
+
+<help>
+<functions>
+  <function>xsltApplyStyleSheet</function>
+  <s3:method>xsltApplyStyleSheet.XMLInternalDocument</s3:method>
+  <s3:method>xsltApplyStyleSheet.default</s3:method>
+</functions>
+<description>
+<brief>Process and XML document with the specified XSL stylesheet</brief>
+<full>
+  From within R, this applies the rules in the specified
+  stylesheet to the given XML document given either
+  as the name of a file/URI, string containing
+  the XML, or an internal DOM constructued
+  using <r:func package="XML">xmlTree</r:func>
+  and creates a new document as a result of the transformation. 
+</full>
+</description>
+<args>
+<arg id="fileName">the name of the file containing the XML document to
+    process or alternatively a string containing the XML content directly.</arg>
+<arg id="sheet">
+the <s3:class>XSLTStylesheet</s3:class> object created
+via <r:func>xsltParseStyleSheet</r:func> that contains the rules
+with which to process the XML document.
+</arg>
+<dots>any number of <code>name=value</code> pairs which are taken as
+   XSLT parameters to use in the processing.</dots>
+<arg id=".params">an alternative mechanism to the <r:dots/> for specifying
+      the parameters. This is a named character vector giving the
+      <code>name = value</code> pairs of parameters.
+      These values are merged with any in the <r:dots/> arguments.
+      Elements in <r:dots/> with the same name as in <r:arg>.params</r:arg>
+      are used in preference to those in <r:arg>.params</r:arg>.
+      Therefore, only those elements of <r:arg>.params</r:arg>
+      whose names are not in <r:dots/> are added to <r:dots/>
+      to make up the list of properties.
+      These two arguments allow the caller to specify a
+      persistent set across calls via the .params
+      and to override individual values within that set
+      for specific calls to <r:func>xsltApplyStyleSheet</r:func>
+</arg>
+</args>
+<return>
+  An object of class <s3:class>XMLInternalXSLTDocument</s3:class>
+  which has two (2) slots:
+  <fields>
+  <field id="doc">a reference to the native (C-level) XML document.</field>
+  <field id="stylesheet">a reference to the native (C-level) XSLT stylesheet
+    used to process the original document. This is needed to serialize
+  the newly created document.</field>
+  </fields>
+</return>
+<seealso>
+<r:func pkg="XML">saveXML</r:func>
+<r:func>xsltParseStyleSheet</r:func>
+</seealso>
+<examples>
+<example>
+<description>
+This is a simple example that processes
+XML from a file via an XSL style sheet which is also in a file.
+</description>
+<code>
+ files = sapply(c("sqrt.xml", "sqrt.xsl"), function(f) system.file("examples", f, package = "Sxslt"))
+ doc = xsltApplyStyleSheet(files[1], files[2])
+ cat(saveXML(doc))
+</code>
+<output id="out:sqrt">
+<![CDATA[
+<HTML><body>
+
+ sqrt: 3
+ pow: 81
+
+ date: Thu Apr 26 07:56:15 2007
+<i class="output">0.004504441825181</i>
+  substring: an(rnor
+</body></HTML>
+]]>
+</output>
+</example>
+<example>
+<description>
+This example also uses an XSL style sheet from a file, but the XML document 
+is given as a string rather than a file.
+</description>
+<code>
+<![CDATA[
+ sheet = xsltParseStyleSheet(system.file("examples", "params.xsl", package="Sxslt"))
+ doc = xsltApplyStyleSheet("<?xml version='1.0' ?><doc></doc>\n", sheet, isURL= FALSE, myParam="'foo'")
+]]>
+</code>
+</example>
+<example>
+<description>
+And we can even pass a pre-parsed XML document  that
+was generated using <r:func pkg="XML">xmlTreeParse</r:func>.
+</description>
+<code>
+ files = sapply(c("sqrt.xml", "sqrt.xsl"), function(f) system.file("examples", f, package = "Sxslt"))
+ doc = xmlTreeParse(files[1], useInternalNodes = TRUE)
+ cat(saveXML(xsltApplyStyleSheet(doc, files[2])))
+</code>
+<output ref="out:sqrt"/>
+</example>
+</examples>
+</help>
+</helpArchive>

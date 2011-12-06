@@ -1,0 +1,748 @@
+
+R version 2.13.1 (2011-07-08)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-apple-darwin11.0.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "Sxslt"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('Sxslt')
+> 
+> assign(".oldSearch", search(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("Sxsltproc")
+> ### * Sxsltproc
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Sxsltproc
+> ### Title: R function mimicing shell command xsltproc
+> ### Aliases: Sxsltproc Rxsltproc
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   # In the shell
+> ##D  Sxsltproc tests/simple.xsl tests/simple.xml
+> ##D  Sxsltproc --param foo "'123'" tests/simple.xsl tests/simple.xml
+> ##D  Sxsltproc --stringparam foo "123" tests/simple.xsl tests/simple.xml
+> ##D  
+> ##D   # In R
+> ##D  Sxsltproc(c("tests/simple.xsl", "tests/simple.xml"))
+> ##D  Sxsltproc(c("--param", "foo", "'123'", "tests/simple.xsl", "tests/simple.xml"))
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("XMLAttributes")
+> ### * XMLAttributes
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: [.XMLAttributes
+> ### Title: Access attributes of XML Node
+> ### Aliases: [.XMLAttributes $.XMLAttributes names.XMLAttributes
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   f <- function(nodeSet) {
+> ##D     node <- nodeSet[[1]]
+> ##D     paste(names(node), collapse=", ")
+> ##D   }
+> ##D   # registerXSLFunction("foo", f)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("XMLXPathParserContext-class")
+> ### * XMLXPathParserContext-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XMLXPathParserContext-class
+> ### Title: Class representing the internal data structure for an XSL
+> ###   transformation
+> ### Aliases: XMLXPathParserContext-class
+> ###   coerce,XMLXPathParserContext,XSLStyleSheet-method
+> ###   coerce,XMLXPathParserContext,XMLInternalDocument-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+>  showClass("XMLXPathParserContext")
+Virtual Class "XMLXPathParserContext" [package "Sxslt"]
+
+Slots:
+                
+Name:   .S3Class
+Class: character
+
+Extends: "oldClass"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("XSLParseEval")
+> ### * XSLParseEval
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XSLParseEval
+> ### Title: Evaluate an S expression from an XSL string
+> ### Aliases: XSLParseEval XSLNULLParseEval XSLParseEval,character-method
+> ###   XSLParseEval,XMLInternalNode-method XSLParseEvalWithOutput
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+>  XSLParseEval("rnorm(10)")
+ [1] -0.6264538  0.1836433 -0.8356286  1.5952808  0.3295078 -0.8204684
+ [7]  0.4874291  0.7383247  0.5757814 -0.3053884
+>  XSLParseEval("rnorm(10)", className = "Array")
+ [1]  1.51178117  0.38984324 -0.62124058 -2.21469989  1.12493092 -0.04493361
+ [7] -0.01619026  0.94383621  0.82122120  0.59390132
+>  XSLParseEval("rnorm(10)", className = "Array", name="me")
+ [1]  0.91897737  0.78213630  0.07456498 -1.98935170  0.61982575 -0.05612874
+ [7] -0.15579551 -1.47075238 -0.47815006  0.41794156
+> 
+> 
+> 
+> cleanEx()
+> nameEx("XSLTTransformContext-class")
+> ### * XSLTTransformContext-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XSLTTransformContext-class
+> ### Title: Class "XSLTTransformContext"
+> ### Aliases: XSLTTransformContext-class
+> ###   coerce,XSLTTransformContext,XSLStyleSheet-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+>  showClass("XSLTTransformContext")
+Virtual Class "XSLTTransformContext" [package "Sxslt"]
+
+Slots:
+                
+Name:   .S3Class
+Class: character
+
+Extends: "oldClass"
+
+Known Subclasses: "XSLCopiedTemplateDescription"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("XSLTemplateDescription-class")
+> ### * XSLTemplateDescription-class
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: XSLTemplateDescription-class
+> ### Title: Description of an XSL template
+> ### Aliases: XSLTemplateDescription-class
+> ###   XSLCopiedTemplateDescription-class
+> ###   docName,XSLTemplateDescription-method
+> ###   docName,XSLCopiedTemplateDescription-method
+> ###   coerce,XSLTemplateDescription,XSLCopiedTemplateDescription-method
+> ### Keywords: classes
+> 
+> ### ** Examples
+> 
+> showClass("XSLTemplateDescription")
+Virtual Class "XSLTemplateDescription" [package "Sxslt"]
+
+Slots:
+                
+Name:   .S3Class
+Class: character
+
+Extends: "oldClass"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("addXSLTFunctions")
+> ### * addXSLTFunctions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: addXSLTFunctions
+> ### Title: Queue R functions to registered as XSL functions.
+> ### Aliases: addXSLTFunctions getXSLTFunctions setXSLTFunctions
+> ###   xsltContextFunction
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> 
+>   addXSLTFunctions(foo = function(x) {
++                             cat("in foo\n")
++                             print(x)
++                             x*2
++                          },
++                    bar = function(x,y) {
++                             cat("in bar\n")
++                             print(x)
++                             print(y) 
++                             nchar(x) + nchar(y)
++                          },
++                    vars = xsltContextFunction(
++                              function(ctxt) {
++                                 cat("xsl variable bob has value", getXSLVariables(ctxt, "bob"), "\n")
++                              })
++    )
+> 
+>   xsltApplyStyleSheet(system.file("examples", "register.xml", package = "Sxslt"),
++                       system.file("examples", "register.xsl", package = "Sxslt"), FALSE)
+registering date
+registering Date
+registering search
+[1] "In register.R"
+in foo
+[1] 1
+in bar
+[1] "abc"
+[1] "wxyz"
+$doc
+<?xml version="1.0" standalone="yes"?>
+<HTML xmlns:s="http://cm.bell-labs.com/stat/S4" xmlns:c="http://www.c.org">
+  <BODY><h1>Dynamically Creating XSL Functions</h1>
+The Sxslt package makes only a few XSL
+functions available to access R. These are sufficient to access all of
+R's functionality and in that respect they are the primitives for
+interfacing XSL to R.
+However, the resulting code in the XSL 
+stylesheets can be a little awkward.
+For example, 
+<pre>
+ r:date()
+</pre>
+might be preferred by authors and  readers
+alike to the functionally equivalent
+<pre>
+ r:call('date')
+</pre>
+For one, the first is shorter and more obvious.
+Secondly, it avoids additional quoting of
+the function name.
+
+<p/>
+
+We could of course register a large number of R functions so that they
+would be available directly to the XSL author. However, what can we do
+about functions that aren't registered, functions from newly added
+packages, and a user's own functions?  The simple answer is that we
+provide an XSL function by which XSL (and XML) authors can register R
+functions with the XSLT engine.  Specifically, one can create an
+alias in XSL for the S function by giving its name.
+The XSL function used to register a new function is
+<i>r:register()</i>.
+One calls this with the name of the R function to be registered
+and this name is also used as the name of the XSL function.
+
+<p/>
+
+A simple example may help. Suppose we want to make the S function
+date available as a
+directly callable XSL function.  Then we can call
+<i>register()</i> and give it the name of the S
+function to be registered. In this case, the
+<i>register()</i> creates an XSL function with the
+name <i>date()</i> and whne this is called, it
+will invoke the S function of the same name.
+The XSL code to register the function is
+<pre>
+  r:register("date")
+</pre>
+and is usually invoked from the 
+<b>test()</b> attribute
+of an if
+element.
+
+(We will perform the registration in this document
+with a rule in register.xsl
+
+)
+
+<p/>
+
+In the <i>date()</i> example, we have a one-to-one
+correspondence between the name of the XSL function and the S
+function.  This is often convenient, but sometimes we will want the
+two to be separate.  If we want to associate or alias an S function
+with a different name in XSL we can provide a second argument to
+<i>register()</i>.  The first argument gives the
+name of the new XSL function to create.  The second
+argument is the name of the S function to use to implement that
+XSL function.
+For example, supppose we want to call the S function
+<i class="sfunction">date()</i> from XSL but
+would like to have a call of the form
+<pre>
+ r:Date()
+</pre>
+(i.e. the first letter capitalized).
+Then, we call <i>register()</i>
+with <code>"Date"</code> as the first argument
+and <code>"date"</code> as the second argument,
+i.e.
+<pre>
+ r:register("Date", "date")
+</pre>
+
+Again, we register this from this document.
+
+
+<p/>
+
+A final wrinkle on registration allows us to associate S functions
+that we define in the XML and XSL documents rather than pre-existing
+functions in S.  The second argument to
+<i>register()</i> can be a string containing an S
+expression that defines (and whose value is) an S function.  The
+underlying <i>register()</i> function checks to
+see if this second argument is the name of existing function anywhere
+in the R search path. If so, it uses that.  Otherwise,
+registerXSLFunction attempts to parse
+and evaluate the function argument and if it returns an
+S function, it register that.
+
+As a simple-minded example, let's define an XSL function
+<i>search()</i> that returns the output from the
+corresponding S function, but concatenates the different names of the
+elements on the search path into a single, comma-separate string.
+
+<pre>
+ r:register("search", "function() paste(search(), collapse=', ')) 
+</pre>
+This allows us to easily modify and use S functions that do not provide a suitable
+return type from within our XML and XSL documents.
+
+
+
+
+<p/>
+Now that we have created these 3 functions,
+let's call them.
+
+We can invoke the XSL function <i>date()</i>
+which returns Thu Nov 10 08:40:13 2011
+
+<p/>
+We can call the XSL function <i>Date()</i>
+which will call the R function <i class="sfunction">date()</i>.
+Thu Nov 10 08:40:13 2011
+
+<p/>
+We next invoke the XSL function <i>search()</i>.
+.GlobalEnv, package:Sxslt, CheckExEnv, package:stats, package:graphics, package:grDevices, package:utils, package:datasets, package:methods, Autoloads, package:base
+
+
+<h1>Registering Functions Externally</h1>
+
+We have registered XSL functions from within the target
+document. Obviously, we can do this from the XSL file and reap the
+benefits of having this apply to all target XML files.  In the same
+spirit, we can put the function registration code in S code.  Then we
+can register numerous functions by sourcing a file or calling a
+top-level registration function from XSL, or simply having the
+registration happen when R starts via the .Rprofile or a
+.First.lib function of a library that
+is attached.
+The file register.R illustrates how this works.
+
+
+   Calling foo: 2
+   Calling bar: 7
+
+<h1>The Registration and Invocation Mechanism</h1> 
+
+The reason that we can interchangeably register XSL functions from
+XML, XSL and R is because of the mechanism used for registration.  The
+infrastructure is quite simple.  We define an R function --
+registerXSLFunction -- which is the
+primary entry point.  This handles the different cases of when a
+second argument is provided and whether it is a name, a function or an
+S expression that evaluates to the function to be registered.  Then,
+this function calls a C routine
+(RSXSLT_registerFunction) which stores the name
+and function in an internal table, and registers the name (and a
+generic handler) with the XSLT engine. 
+
+<p/> The registerXSLFunction function
+makes it easy for S programmers to register XSL functions.  This is
+how we can add functions from S scripts and libraries.  Since
+registerXSLFunction is an S function,
+we can also call it from XSL. And the XSL function
+<i>register()</i> is exactly this, a simple call
+to registerXSLFunction using the basic
+mechanism for calling any R function from XSL.  So this establishes
+the XSL interface to the registration functionality.
+
+<p/>
+
+When one of these registered XSL functions is invoked by the XSLT
+engine, the generic handler routine we associated with the function
+when registering it with the XSLT engine is called.  This routine
+retrieves the S function associated with the XSL function name being
+called.  Then it calls that S function with the arguments from XSL
+and returns the value as a suitable XSL object, when possible.
+
+</BODY>
+</HTML>
+ 
+
+$stylesheet
+An object of class "XSLStyleSheet"
+Slot "ref":
+<pointer: 0x7fc219430440>
+
+
+$status
+OK 
+ 0 
+
+attr(,"class")
+[1] "XMLInternalXSLTDocument"
+> 
+>   addXSLTFunctions(Date = date)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("closureGenerator")
+> ### * closureGenerator
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: closureGenerator
+> ### Title: Programmatically create functions with a shared environment
+> ### Aliases: closureGenerator
+> ### Keywords: programming
+> 
+> ### ** Examples
+> 
+> 
+>   # This is a silly example only to illustrate the
+>   # mechanism.
+>   # We have two functions that share a common variable
+>   #  count
+>   # Each returns a value but records how often it was called
+> 
+>  a = function(size = 10, p = .5) {
++     count["a"] <<- count["a"] + 1
++     rbinom(1, size, p)
++  }
+> 
+>  b = function(lambda = 5) {
++     count["b"] <<- count["b"] + 1
++     rpois(1, lambda)
++  }
+> 
+>  numCount <-
++   function(which = character()) {
++      if(length(which))
++         count[which]
++      else
++         sum(count)
++   }
+> 
+>   f = closureGenerator(binomial = a, poisson = b, counts = numCount,
++                        .vars = list(count = c(a = 0, b = 0)))
+> 
+>   addXSLTFunctions(f)
+> 
+>   stylesheet = system.file("examples", "closureCount.xsl", package = "Sxslt")
+> 
+>   z = xsltApplyStyleSheet("<?xml version='1.0'?><doc/>", stylesheet)
+>   library(XML)
+>   cat(saveXML(z))
+<?xml version="1.0"?>
+
+  Binomial: 4, 9
+  Poisson: 5, 5
+
+  Number of calls: 4
+> 
+>      # Now do it again and we get a new set of counts.
+>   z = xsltApplyStyleSheet("<?xml version='1.0'?><doc/>", stylesheet)
+>   cat(saveXML(z))
+<?xml version="1.0"?>
+
+  Binomial: 4, 13
+  Poisson: 9, 4
+
+  Number of calls: 4
+> 
+> 
+>    # If we really wanted to have the number of counts cumulate across
+>    # all calls to  xsltApplyStyleSheet(), then we would register the
+>    # functions themselves.
+> 
+>       # call the closure generator function ourselves
+>       # and register the individual functions returned by that
+>       # not the closureGenerator. These are function objects that will be
+>       # added to each XSLT context.
+>   addXSLTFunctions(.funcs = f(), clear = TRUE)
+> 
+>       # apply the stylesheet twice
+>   for(i in 1:2) 
++      z = xsltApplyStyleSheet("<?xml version='1.0'?><doc/>", stylesheet)
+> 
+>       # We should see 8 calls to the functions, not 4.
+>   cat(saveXML(z))
+<?xml version="1.0"?>
+
+  Binomial: 6, 9
+  Poisson: 7, 3
+
+  Number of calls: 8
+> 
+> 
+>  # For a real example, see dynamic.R in XML/Literate/ in the
+>  # org/omegahat repository, i.e. the SXMLDocs package.
+>   
+> 
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:XML’
+
+> nameEx("getTemplate")
+> ### * getTemplate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getTemplate
+> ### Title: Find the template to process a node
+> ### Aliases: getTemplate getTemplate,XSLStyleSheet,character-method
+> ###   getTemplate,XSLStyleSheet,XMLInternalNode-method
+> ###   getTemplate,character,character-method
+> ###   getTemplate,character,XMLInternalNode-method
+> ###   getTemplate,XSLTTransformContext,XMLInternalNode-method
+> ###   getTemplate,XSLTTransformContext,missing-method
+> ### Keywords: IO programming
+> 
+> ### ** Examples
+> 
+>   
+>     # A query to see which template handles article.
+>    #XXX Problem
+>   temp = getTemplate("http://www.omegahat.org/XDynDocs/XSL/html.xsl", "article")
+> 
+>     # Query a node with a name space so have to create the node
+>     # (The node does get copied as it has no document which is needed
+>     # during the creation of the XSL context)
+>   library(XML)
+>   node = newXMLNode("r:code", namespaceDefinitions = c(r = "http://www.r-project.org"))
+>   rcode = getTemplate("http://www.omegahat.org/XDynDocs/XSL/html.xsl", node)
+> 
+>   rcode
+$stylesheet
+[1] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl"
+
+$match
+[1] "r:code|r:test"
+
+$name
+[1] "r-code"
+
+$node
+[1] "<xsl:template match=\"r:code|r:test\" name=\"r-code\">\n  <xsl:if test=\"$runCode and not(@eval='false') and function-available('r:evalNode') and not(ancestor::r:noeval)\">\n    <xsl:variable name=\"value\">\n      <xsl:copy-of select=\"r:evalNode(., string($targetFormat))\"/>\n    </xsl:variable>\n    <xsl:if test=\"not(@showOutput) or @showOutput != 'false'\">\n      <xsl:copy-of select=\"$value\"/>\n    </xsl:if>\n  </xsl:if>\n</xsl:template>"
+
+$priority
+[1] -12345789
+
+$mode
+character(0)
+
+$location
+/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl 
+                                                               56 
+
+attr(,"class")
+[1] "XSLCopiedTemplateDescription"
+>   docName(rcode)
+[1] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl"
+>   rcode$location
+/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl 
+                                                               56 
+>   cat(rcode$node)
+<xsl:template match="r:code|r:test" name="r-code">
+  <xsl:if test="$runCode and not(@eval='false') and function-available('r:evalNode') and not(ancestor::r:noeval)">
+    <xsl:variable name="value">
+      <xsl:copy-of select="r:evalNode(., string($targetFormat))"/>
+    </xsl:variable>
+    <xsl:if test="not(@showOutput) or @showOutput != 'false'">
+      <xsl:copy-of select="$value"/>
+    </xsl:if>
+  </xsl:if>
+</xsl:template>>  
+> 
+>     # Instead of parsing the style sheet each time, do it once and do
+>     # multiple queries
+>   html.sty = xsltParseStyleSheet("http://www.omegahat.org/XDynDocs/XSL/html.xsl")
+> 
+>   rcode = getTemplate(html.sty, 
++                       newXMLNode("r:code", namespaceDefinitions = c(r = "http://www.r-project.org")))
+> 
+>   templates = lapply(c("latex", "docbook", "ulink"), function(x)  getTemplate(html.sty, x))
+>   sapply(templates, docName)
+[1] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/OmegahatXSL/html/defs.xsl"            
+[2] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/OmegahatXSL/common/RCommonDocbook.xsl"
+[3] "file:///Users/duncan/docbook-xsl-current/xhtml/docbook.xsl"                                 
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:XML’
+
+> nameEx("getXSLParams")
+> ### * getXSLParams
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: getXSLParams
+> ### Title: Extract the top-level XSL parameters and default values in an
+> ###   XSL stylesheet
+> ### Aliases: getXSLParams
+> ### Keywords: programming
+> 
+> ### ** Examples
+> 
+>   system.file()
+[1] "/Users/duncan/Projects/R-2.13.1/build/library/base"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("libxsltVersion")
+> ### * libxsltVersion
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: libxsltVersion
+> ### Title: Query the version of the libxslt library in use.
+> ### Aliases: libxsltVersion
+> ### Keywords: IO programming
+> 
+> ### ** Examples
+> 
+>   libxsltVersion()
+major minor patch 
+    1     1    26 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("registerXSLFunction")
+> ### * registerXSLFunction
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: registerXSLFunction
+> ### Title: Define an XSL extension function
+> ### Aliases: registerXSLFunction
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D   registerXSLFunction("init", function(...) { TRUE })
+> ##D   registerXSLFunction("register", function(name, func) { TRUE })
+> ##D   registerXSLFunction("foo", function(x) { cat("in foo\n"); print(x) ; x*2})
+> ##D   registerXSLFunction("bar", function(x,y) { cat("in bar\n"); print(x) ; print(y) ; nchar(x) + nchar(y)})
+> ##D 
+> ##D   xsltApplyStyleSheet(system.file("examples", "register.xml", package = "Sxslt"),
+> ##D                       system.file("examples", "register.xsl", package = "Sxslt"), FALSE)
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("registerXSLTExtension")
+> ### * registerXSLTExtension
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: registerXSLTExtension
+> ### Title: Register a new XSLT extension namespace
+> ### Aliases: registerXSLTExtension
+> ### Keywords: IO programming
+> 
+> ### ** Examples
+> 
+> 
+>  library(XML)  # for xmlValue
+>  e = new.env()
+>  omgEval = function(node) {
++     eval(parse(text = xmlValue(node)), e)
++  }
+>  environment(omgEval) = e
+> 
+>  registerXSLTExtension(c("omg" = "http://www.omegahat.org"),
++                        eval = omgEval)
+[1] TRUE
+>   # now  any XSL file can call omg:eval() by
+>   #  declaring the namespace http://www.omegahat.org
+>   #  and adding it to the extension-element-prefixes
+>   #  
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:XML’
+
+> nameEx("saveXML")
+> ### * saveXML
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: saveXML.XMLInternalXSLTDocument
+> ### Title: Serializes XSLT-processed document to a file or string
+> ### Aliases: saveXML.XMLInternalXSLTDocument
+> ###   saveXML,XMLInternalXSLTDocument-method
+> ### Keywords: IO
+> 
+> ### ** Examples
+> 
+>  library(XML)
+> 
+>  doc <- xsltApplyStyleSheet(system.file("examples", "register.xml", package = "Sxslt"),
++                             system.file("examples", "register.xsl", package = "Sxslt"), FALSE)
+registering date
+registering Date
+registering search
+[1] "In register.R"
+Error in registerXSLFunction("foo", function(x) { : 
+  NULL value for xslTransformContext. One cannot register an R function with XSLT when not applying an XSL style sheet.
+Calls: XSLParseEval ... eval.with.vis -> eval.with.vis -> registerXSLFunction -> .Call
+Execution halted

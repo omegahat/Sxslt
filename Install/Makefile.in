@@ -1,0 +1,44 @@
+#R_HOME=@R_HOME@
+
+XSLT_HOME=@XSLT_HOME@
+XSLT_CONFIG=@XSLT_CONFIG@
+
+#include $(R_HOME)/etc/Makeconf
+
+all: @PKG_NAME@.so Sxsltproc.bin
+
+DEBUG=-g
+
+XSLT_CFLAGS=-I$(XSLT_HOME)/ @XSLT_CONFIG_CFLAGS@ @XSLT_DEBUG@
+XSLT_LIBS=@XSLT_LIBS@ @XSLT_CONFIG_LIBS@
+
+CFLAGS=$(DEBUG) -D_R_=1 -DUSE_R=1 -I$(R_HOME)/include $(XSLT_CFLAGS)
+LIBS=-L$(R_HOME)/lib -lR $(XSLT_LIBS)
+
+#-L$(XSLT_HOME)/libexslt/.libs -lexslt -L$(XSLT_HOME)/libxslt/.libs -lxslt
+
+OBJS=xsltproc.o
+
+# Sxsltproc.o Rsupport.o Converters.o
+
+# NodeSet.o Converters.o Sxsltproc.o Rsupport.o 
+
+@PKG_NAME@.so: NodeSet.c Converters.c Sxsltproc.c Rsupport.c XSLTInS.c
+	(XSLT_CONFIG=${XSLT_CONFIG} ; export XSLT_CONFIG ; PKG_LIBS="$(LIBS)"; export PKG_LIBS ; PKG_CPPFLAGS="$(LIBS)"; export PKG_CPPFLAGS ; $(R_HOME)/bin/R CMD SHLIB -o $@ $^)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< 
+
+$(R_PACKAGE_DIR)/libs/lib@PKG_NAME@.so: @PKG_NAME@.so
+	cp $^ $(@)
+
+lib@PKG_NAME@.so: @PKG_NAME@.so
+	ln -s @PKG_NAME@.so lib@PKG_NAME@.so
+
+Sxsltproc.bin: xsltproc.o  $(R_PACKAGE_DIR)/libs/lib@PKG_NAME@.so
+	$(CC) $(LDFLAGS) -o $@ xsltproc.o -L$(R_PACKAGE_DIR)/libs -l@PKG_NAME@ $(LIBS)
+	chmod +x ../inst/bin/Sxsltproc
+
+
+clean:
+	-rm $(OBJS)

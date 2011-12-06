@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if test -z "$LIB_XSLT" ; then
+  echo "Please define LIB_XSLT"
+  exit 1
+fi
+
+mkdir $R_PACKAGE_DIR/libs
+# These were in $LIB_ZLIB/lib/ and $LIB_XML/lib
+
+cp $LIB_XSLT/bin/libxslt.dll $R_PACKAGE_DIR/libs
+cp $LIB_XSLT/bin/libexslt.dll $R_PACKAGE_DIR/libs
+
+mv inst/bin/Sxsltproc inst/bin/Sxsltproc.sh  # shell version.
+
+
+

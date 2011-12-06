@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<article>
+<author><firstname>Duncan</firstname><surname>Temple Lang</surname></author>
+<para>
+This is the first section and refers to the <xml:node>author</xml:node> tag which should
+get expanded to <author/>
+</para>
+
+
+<ignore>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" format="html">
+
+  <xsl:import href="http://www.omegahat.org/XDynDocs/XSL/html.xsl"/>
+
+  <xsl:template match="author">
+    <a href="mailto:duncan@wald.ucdavis.edu">Duncan Temple Lang</a>
+  </xsl:template>
+</xsl:stylesheet>
+
+<xsl:stylesheet format="fo"
+		xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
+                xmlns:fo="http://www.w3.org/1999/XSL/Format" 
+		version="1.0">
+
+  <xsl:template match="author">
+    <fo:basic-link external-destination="mailto:duncan@wald.ucdavis.edu">Duncan Temple Lang</fo:basic-link>
+  </xsl:template>
+
+</xsl:stylesheet>
+
+</ignore>
+
+</article>

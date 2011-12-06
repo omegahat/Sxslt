@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>The @PKG_NAME@ package</title>
+<link rel="stylesheet" href="OmegaTech.css">
+</head>
+
+<body>
+<h1>The @PKG_NAME@ package</h1>
+<p align=right><a href="@TAR_FILE@">Version @PKG_NAME@_@MAJOR_VERSION@.@MINOR_VERSION@-@PATCH_LEVEL@</a></p>
+
+This package is an R interface to Dan Veillard's <a
+href="http://www.xmlsoft.org/XSLT.html">libxslt translator</a>.
+It allows R programmers to use XSLT directly from within R,
+and also allows XSL code to make use of R functions.
+In this sense, it is a dual, bi-directional package.
+It provides a stand-alone XSLT processor that extends
+xsltproc with support for R functions inside XSL,
+and it also provides functions within R to
+parse and apply stylesheets in R.
+This allows one to use R functions to create content dynamically at the
+time the document is being created
+using either XSL or R or both.
+
+<p>
+
+We have previously provided the same style of extension for <a
+href="http://xml.apache.org/xalan-c">Xalan</a>, the Apache XSL
+translator.  This package currently provides more access to the
+internal DOM (Document Object Model) of the translator itself.
+<ul>
+
+  <li> Nodesets are passed from XSL to R as references to the internal
+       C objects and methods are defined on such objects to access
+       the different nodes and their data such as node name,
+       attributes, children, namespace,...
+  <li> One can use (new) features in the <a
+href="http://www.omegahat.org/RSXML/index.html">XML package</a> which make it easy to use R
+to create XML trees directly in memory using <a
+href="http://www.xmlsoft.org">libxml</a>.  These can then be
+inserted directly into the target DOM being built as part of the XSL
+transformation. See a <a href="examples/nodeCreate.R">prototype example</a>.
+</ul>
+
+
+<p>
+
+The advantage of this approach is that it allows one to separate the
+formatting from the generation of output from statistical software but
+to have them integrated at the time one creates the document.  This
+allows one to avoid running the statistical software in one window and
+cutting and pasting the results into a document, or having the
+statistical software write output to files that are latter included
+into a larger document.
+
+
+<p>
+Possible uses for this package include
+<dl>
+  <dt> Report generation
+  <dd> The XML input acts as a template whose place-holders are
+      expanded when the XSL processing is done using data that is
+      available at that time. Documents such as nightly reports
+      can then be produced with a format specified in the XML file,
+       but with data integrated dynamically.
+      
+  <dt> Reproducible reports (research, simulation, etc.)
+  <dd>
+        The report can be created as self-contained, single object
+      from which we can generate all the contents. This avoids
+      synchronizing figures, tables and results in the document with
+      other files which may be based on different data, etc.
+
+      <p>
+       Additionally, these reports can be re-processed with different
+      inputs to generate similarly styled documents, but with
+      different results. This allows <i>what-if</i> analyses to be
+      done relatively easily and consistently with the original
+      document.
+  <dt> ...
+  <dd>
+</dl>
+
+
+<p>
+
+
+<h2><a name="Download">Download</a></h2>
+The current version is available as a GNU-zipped tar file
+<a href="@TAR_FILE@">@TAR_FILE@</a>
+
+<p>
+
+See the <a href="README.html">README</a> and <a
+href="INSTALL.html">INSTALL</a> files for instructions on using and
+installing the package.
+
+
+<h2><a name="Documentation"></a></h2>
+<dl>
+  <dt>
+  <li><a href="FAQ.html">FAQ</a>
+  <dd>
+  
+  <dt>
+  <li><a href="../SXalan/Docs/SinXSLT.html">S in XSLT</a>
+  <dd> Some notes and documentation.
+
+  <dt>
+  <li> <a href="Changes.html">Changes across the different versions.</a>
+  <dd>
+</dl>
+
+<h2><a name="Examples">Examples</a></h2>
+
+There are currently a few <a href="examples">examples</a>
+
+
+<h2><a href="Related Packages">Related Packages</a></h2>
+<dl>
+  <dt> <a href="http://www.omegahat.org/RSXMLObjects">RSXMLObjects</a>
+  <dd> An S package for  reading and writing S objects formatted using
+       XML.
+
+  <dt> <a href="http://www.omegahat.org/SNetscape">SNetscape</a> 
+  <dd> A plugin for Netscape that allows JavaScript code to call S
+      functions and access S objects as well as allowing S to call
+      JavaScript and communicate with other LiveConnect plugins.
+      
+      
+  <dt> <a href="http://www.omegahat.org/RSXML">XML</a>
+  <dd> An package for reading and writing XML within S.
+
+</dl>
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Mon Jun  5 06:21:24 PDT 2006
+<!-- hhmts end -->
+</body> </html>

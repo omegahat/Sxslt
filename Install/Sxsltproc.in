@@ -1,0 +1,27 @@
+#!/bin/sh
+
+EXEC=@R_PACKAGE_DIR@/bin/Sxsltproc.bin
+
+XSLT_LD_PATH=@XSLT_HOME@/libxslt/.libs:@XSLT_HOME@/libexslt/.libs:@XSLT_HOME@/breakpoint/.libs
+
+if test -z "${LD_LIBRARY_PATH}" ; then
+ LD_LIBRARY_PATH=@R_PACKAGE_DIR@/libs:@R_HOME@/lib:${XSLT_LD_PATH}
+else
+ LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:@R_PACKAGE_DIR@/libs:@R_HOME@/lib:${XSLT_LD_PATH}
+fi
+
+export LD_LIBRARY_PATH
+
+
+while test -n "${1}" ; do
+ case ${1} in 
+  -d)  DEBUG=true ; shift ; break ;;
+  *) args="${args} $1" ; shift ;;
+ esac    
+done
+
+if test -n "${DEBUG}" ; then
+  gdb $EXEC
+else
+  $EXEC $args
+fi

@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+
+<test xmlns:r="http://www.r-project.org"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+      xmlns:s="http://cm.bell-labs.com/stat/S4"
+      xmlns:c="http://www.c.org"
+>
+
+<title>Dynamically Creating XSL Functions</title>
+The <s:package>Sxslt</s:package> package makes only a few XSL
+functions available to access R. These are sufficient to access all of
+R's functionality and in that respect they are the primitives for
+interfacing XSL to R.
+However, the resulting <quote>code</quote> in the XSL 
+stylesheets can be a little awkward.
+For example, 
+<verb>
+ r:date()
+</verb>
+might be preferred by authors and  readers
+alike to the functionally equivalent
+<verb>
+ r:call('date')
+</verb>
+For one, the first is shorter and more obvious.
+Secondly, it avoids additional quoting of
+the function name.
+
+<p/>
+
+We could of course register a large number of R functions so that they
+would be available directly to the XSL author. However, what can we do
+about functions that aren't registered, functions from newly added
+packages, and a user's own functions?  The simple answer is that we
+provide an XSL function by which XSL (and XML) authors can register R
+functions with the XSLT engine.  Specifically, one can create an
+<quote>alias</quote> in XSL for the S function by giving its name.
+The XSL function used to register a new function is
+<xsl:function>r:register</xsl:function>.
+One calls this with the name of the R function to be registered
+and this name is also used as the name of the XSL function.
+
+<p/>
+
+A simple example may help. Suppose we want to make the S function
+<s:functionRef>date</s:functionRef> available as a
+<quote>directly</quote> callable XSL function.  Then we can call
+<xsl:function>register</xsl:function> and give it the name of the S
+function to be registered. In this case, the
+<xsl:function>register</xsl:function> creates an XSL function with the
+name <xsl:function>date</xsl:function> and whne this is called, it
+will invoke the S function of the same name.
+The XSL code to register the function is
+<verb>
+  r:register("date")
+</verb>
+and is usually invoked from the 
+<xsl:attribute>test</xsl:attribute> attribute
+of an <xsl:element>if</xsl:element>
+element.
+
+(We will perform the registration in this document
+with a rule in <file>register.xsl</file>
+<r:register name="date" function="date"/>
+)
+
+<p/>
+
+In the <xsl:function>date</xsl:function> example, we have a one-to-one
+correspondence between the name of the XSL function and the S
+function.  This is often convenient, but sometimes we will want the
+two to be separate.  If we want to associate or alias an S function
+with a different name in XSL we can provide a second argument to
+<xsl:function>register</xsl:function>.  The first argument gives the
+name of the new XSL function to create.  The second
+argument is the name of the S function to use to implement that
+XSL function.
+For example, supppose we want to call the S function
+<s:function>date</s:function> from XSL but
+would like to have a call of the form
+<verb>
+ r:Date()
+</verb>
+(i.e. the first letter capitalized).
+Then, we call <xsl:function>register</xsl:function>
+with <literal>"Date"</literal> as the first argument
+and <literal>"date"</literal> as the second argument,
+i.e.
+<verb>
+ r:register("Date", "date")
+</verb>
+
+Again, we register this from this document.
+<r:register name="Date" function="date"/>
+
+<p/>
+
+A final wrinkle on registration allows us to associate S functions
+that we define in the XML and XSL documents rather than pre-existing
+functions in S.  The second argument to
+<xsl:function>register</xsl:function> can be a string containing an S
+expression that defines (and whose value is) an S function.  The
+underlying <xsl:function>register</xsl:function> function checks to
+see if this second argument is the name of existing function anywhere
+in the R search path. If so, it uses that.  Otherwise,
+<s:functionRef>registerXSLFunction</s:functionRef> attempts to parse
+and evaluate the <s:arg>function</s:arg> argument and if it returns an
+S function, it register that.
+
+As a simple-minded example, let's define an XSL function
+<xsl:function>search</xsl:function> that returns the output from the
+corresponding S function, but concatenates the different names of the
+elements on the search path into a single, comma-separate string.
+
+<verb>
+ r:register("search", "function() paste(search(), collapse=', ')) 
+</verb>
+This allows us to easily modify and use S functions that do not provide a suitable
+return type from within our XML and XSL documents.
+
+<r:register name="search" 
+            function="function() paste(search(), collapse=', ') "/>
+
+
+<p/>
+Now that we have created these 3 functions,
+let's call them.
+
+We can invoke the XSL function <xsl:function>date</xsl:function>
+which returns <foo/>
+
+<p/>
+We can call the XSL function <xsl:function>Date</xsl:function>
+which will call the R function <s:function>date</s:function>.
+<date/>
+
+<p/>
+We next invoke the XSL function <xsl:function>search</xsl:function>.
+<search/>
+
+
+<title>Registering Functions Externally</title>
+
+We have registered XSL functions from within the target
+document. Obviously, we can do this from the XSL file and reap the
+benefits of having this apply to all target XML files.  In the same
+spirit, we can put the function registration code in S code.  Then we
+can register numerous functions by sourcing a file or calling a
+top-level registration function from XSL, or simply having the
+registration happen when R starts via the <file>.Rprofile</file> or a
+<s:functionRef>.First.lib</s:functionRef> function of a library that
+is attached.
+The file <file>register.R</file> illustrates how this works.
+
+<externalRegister />
+
+<title>The Registration and Invocation Mechanism</title> 
+
+The reason that we can interchangeably register XSL functions from
+XML, XSL and R is because of the mechanism used for registration.  The
+infrastructure is quite simple.  We define an R function --
+<s:functionRef>registerXSLFunction</s:functionRef> -- which is the
+primary entry point.  This handles the different cases of when a
+second argument is provided and whether it is a name, a function or an
+S expression that evaluates to the function to be registered.  Then,
+this function calls a C routine
+(<c:routine>RSXSLT_registerFunction</c:routine>) which stores the name
+and function in an internal table, and registers the name (and a
+generic handler) with the XSLT engine. 
+
+<p/> The <s:functionRef>registerXSLFunction</s:functionRef> function
+makes it easy for S programmers to register XSL functions.  This is
+how we can add functions from S scripts and libraries.  Since
+<s:functionRef>registerXSLFunction</s:functionRef> is an S function,
+we can also call it from XSL. And the XSL function
+<xsl:function>register</xsl:function> is exactly this, a simple call
+to <s:functionRef>registerXSLFunction</s:functionRef> using the basic
+mechanism for calling any R function from XSL.  So this establishes
+the XSL interface to the registration functionality.
+
+<p/>
+
+When one of these registered XSL functions is invoked by the XSLT
+engine, the generic handler routine we associated with the function
+when registering it with the XSLT engine is called.  This routine
+retrieves the S function associated with the XSL function name being
+called.  Then it calls that S function with the arguments from XSL
+and returns the value as a suitable XSL object, when possible.
+
+</test>

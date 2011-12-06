@@ -1,0 +1,164 @@
+@
+In this very short document, we show a
+prototype of how one can create XML sub-trees
+within R directly in memory and pass them back to
+the libxslt engine to be inserted directly into
+the target DOM being created.
+This same mechanism, and indeed R interface,
+can be used to create XSL strings rather than
+in-memory trees. So the same R code can be used
+to serialize XML representations either
+to a file or to internal representations
+merely by changing the destination object.
+
+The example is intentionally very simple:
+we transform any XML tag 
+whose tag-name is \XMLTag{rnode}
+using an XSL template that merely calls
+the R function \SFunction{dateStamp}.
+That function produces an XML representation
+of both the date and the time.
+We obtain the elements
+that make up the stamp (i.e. 
+day, month, hour, second, $\ldots$)
+using the operating system call
+\executable{date}
+and customizing the way that it prints
+the result. Not
+all operating systems will have such a
+version of \executable{date},
+but assuming we are using one, the
+R call to it generates a character vector
+with each element in a character vector. 
+We have \executable{date}
+return the day of the week and month of the year 
+in both numeric and full descriptive name.
+
+Given this information, the \SFunction{dateStamp}
+generates an XML tree that looks something like
+<<>>=
+<timestamp>
+ <date>
+  <day name="Saturday">6</day>
+  <month name="October">10</month>
+  <year>2001</year>
+ </date>
+ <time>
+  <second>55</second>
+  <minute>22</minute>
+  <hour>11</hour>
+  <timezone>EDT</timezone>
+ </time>
+</timestamp>
+
+@ 
+This is done using the \SFunction{xmlTree} to
+create the in-memory tree and then adding
+nodes to it.
+There are three container tags, i.e. that have children:
+\XMLTag{timestamp}, \XMLTag{date} and \XMLTag{time}.
+For each of these, we open and close the tag in separate actions.
+Between these opening and closing operations, we add the sub-tags.
+The tree object (\SVariable{dom}) remembers which
+tags are open and closes the inner-most one when
+we call its \SFunction{closeTag} method.
+
+@ 
+<<InlinedTrees.R>>=
+dateStamp <-
+function()
+{
+ library(XML)
+ vals <- system("date '+%A\n%w\n%B\n%m\n%Y\n%S\n%M\n%k\n%Z'", intern=T)
+ tagNames <- c("day"=1, "month"=3, "year"=5, "second"=6, "minute"=7, "hour"=8, "timezone"=9)
+ dom <- xmlTree()
+  dom$addTag("timestamp", close=F)
+     dom$addTag("date", close=F)
+       dom$addTag("day", vals[2], attrs=c(name=vals[1]))
+       dom$addTag("month", vals[4], attrs=c(name=vals[3]))
+       dom$addTag("year", vals[5])
+     dom$closeTag()
+    
+     dom$addTag("time", close=F)
+      dom$addTag("second", vals[6])
+      dom$addTag("minute", vals[7])
+      dom$addTag("hour", vals[8])
+      dom$addTag("timezone", vals[9])
+     dom$closeTag()
+  dom$closeTag()
+
+  return(dom$value())
+}
+
+
+@ 
+The return value of this function
+is an object of class \SClass{XMLInternalDocument}.
+
+@ 
+Now that we have this function, we can arrange to call if from
+XSL. This is simple since we are merely calling an R function
+with no arguments. So the XSL rule is given by:
+<<rnode template>>=
+<xsl:template match="rnode">
+Hi there
+ <xsl:value-of select="r:call('dateStamp')" />
+</xsl:template>
+
+@ 
+<<InlinedTrees.xml>>=
+<?xml version="1.0" ?>
+<doc>
+ <rnode>Testing. This text is ignored (for the moment!).</rnode>
+</doc>
+
+@ 
+<<InlinedTrees.xsl>>=
+<?xml version="1.0" ?>
+
+<xsl:stylesheet
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:r="http://www.r-project.org"
+  xsl:extension-element-prefixes="r" 
+  version="1.0">
+
+<xsl:template match="*|/">
+ <xsl:apply-templates />
+</xsl:template>
+
+<xsl:template match="doc">
+ <xsl:if test="r:init('--silent') > 0" />
+ <xsl:if test="r:source('InlinedTrees.R')" />
+ <xsl:apply-templates />
+</xsl:template>
+
+
+<<rnode template>>
+
+</xsl:stylesheet>
+
+@ 
+The command to process the XML document using the XSL
+
+<<>>=
+ Sxsltproc InlinedTrees.xsl InlinedTrees.xml > InlinedTrees.html
+
+@
+Here is an alternative way of generating the XML content
+but returning it as a string.
+We simply use \SFunction{xmlOutputBuffer}
+instead of \SFunction{xmlTree}.
+
+@
+<<>>=
+And an alternative is to make  make \executable{date} do all the work in generating
+the string!
+<<>>=
+dateStamp <-
+function()
+{
+ system("date '+<date><day name=\"%A\">%d</day><month
+                                  %name=\"%B\">%m</month><year></year></date>'", intern=T)
+}
+
+

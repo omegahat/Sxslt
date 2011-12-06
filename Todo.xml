@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../../../../../../../Classes/StatComputing/XDynDocs/inst/XSL/OmegahatXSL/Todo.xsl" ?>
+<!-- <?xml-stylesheet type="text/xsl" href="http://www.omegahat.org/Todo.xsl" ?> -->
+
+<topics xmlns:r="http://www.r-project.org">
+
+<ulink url="../../../RS/Todo.xml">XML Todo</ulink>
+<ulink url="../../../../../../../Books/RPackages/RXMLDoc/Todo.xml">RXMLDoc Todo</ulink>
+<ulink url="../../../../../../../Classes/StatComputing/XDynDocs/Todo.xml">IDynDocs Todo</ulink>
+<ulink url="Todo.html">Original HTML Todo</ulink>
+<topic>
+<title>XML Internal Nodes</title>
+
+<items>
+
+<item>
+Release R objects that we preserve when returning across the R-XSL interface.
+</item>
+
+<item status="done">
+unlist method for an XPathNodeSet 
+</item>
+
+<item status="done">
+Have x[] and unlist(x) for an XPathNodeSet return the scalars for strings,
+numbers, etc.
+</item>
+
+<item status="done">
+x[] on an XPathNodeSet support a references argument to return pointers to the internal objects.
+
+</item>
+
+<item status="done">
+register the as function
+</item>
+
+<item status="done">
+Return complex R object to XSL as a special type of XPath element
+that we define via a new type for the union.
+<br/>
+use xmlWrapExternal
+</item>
+
+<item status="done">
+r:eval <i>extension element</i> to avoid 
+using xsl:if test="r:eval(...)" and funky quoting
+</item>
+
+<item>
+Build Sxsltproc.bin when libR.so is available.
+<br/>
+or use a call to Rscript or littler with an R script that 
+mimics xsltproc via library(Sxslt).
+This avoids having to build Sxsltproc.bin.
+</item>
+
+<item>
+Sxsltproc.bin for Windows
+<br/>
+See above
+</item>
+
+<item status="done">
+Make XPathNodeSet easier to work with in R.
+<br/>
+The unlist() and x[] and x[references = TRUE/FALSE] methods.
+</item>
+
+<item status="done">
+Why are we getting XMLUnknownInternalNode objects. <br/>
+These were objects of type XML_ATTRIBUTE_NODE and we didn't
+have a case for the conversion class in R for this.
+</item>
+
+
+
+<item status="done">
+Errors in the calls to R functions cause problems.
+<p>
+Put a call t RXSLT_Error() in response to the R_tryEval
+in RXSLT_call.
+</p>
+</item>
+
+<item>
+Indicate to the R caller that there were errors
+even if we have the document.
+Look in the state of the context.
+</item>
+
+<item status="need-doc">
+xslStop to terminate the XSL processing without an error,
+i.e. mid processing with a partially complete file.
+</item>
+
+<item status="done">
+When use xslError, do we want the result to be an error.
+Done.
+<p>
+How do we signal to XSL that this is an error.
+Set the state to XSLT_STATE_ERROR.
+</p>
+</item>
+
+<item status="need-doc">
+Get the names of all the global variables within a context.
+Don't forget their URIs.
+</item>
+
+<item>
+namespace prefixes and URIs for global variables.
+</item>
+
+<item>
+ Add the relevant missing topics to is(, "language") in R.
+</item>
+
+<item>
+ Perhaps use the name xslt or xsltApply or xsltProcess.
+</item>
+
+<item status="check">
+ Fix the getTemplate bug that seg faults.
+</item>
+
+<item status="done">
+getTemplate() should be allowed to take an
+  XMLXPathParserContext and no node and get the currently active
+  template.
+<p>
+Also added xsltGetCurrentTemplate function.
+</p>
+<p>
+ See 2 below, i.e. elements of the context.
+</p>
+</item>
+
+<item status="need-doc">
+Add xslWarning, xslError  functions which raise the errors via XSLT.
+</item>
+
+<item status="low">
+ Accessors for elements of the context.
+<p>
+  Access to current template via xsltGetCurrentTemplate
+ and the node via xsltGetCurrentInputNode.
+
+</p>
+  <p> Use the GCCTranslationUnit code to generate these.
+       Also want access to routines to operate on the context.
+</p>
+</item>
+
+
+<item status="done">
+ Allow the user to determine whether we are running in Sxsltproc
+       or within an R session.
+  <p>  Define a variable in XSL? or a C-level variable that is on or
+      off depending on which way we start? Need access from R and XSL.</p>
+<p>
+     Only register r:init in the Sxsltproc setup.
+      Then use xsl:if test="function-available('r:init')"
+</p>
+</item>
+<item>
+ C finalizers (for what types of objects) and ensure that they clean up memory.
+</item>
+
+<item status="done">
+ Access an XSL variable from R.
+  <br/>  getXSLVariables()
+      <br/>
+        Find out about namespaces on parameters and why we specify
+        them for the getXSLVariable() routine.
+
+</item>
+
+<item>
+ Converters for R objects to HTML.
+<p>
+Basic mechanism in place. See convert in IDynDocs.
+</p>
+  <p> Could use R2HTML and then parse this into a document.
+       Can't easily change R2HTML to generate actual XML node objects,
+      just text.</p>
+
+</item>
+
+<item status="done">
+  Error handling in the parsing of the stylesheet, etc.
+  <p>   Get the information back to R.</p>
+<p>See .errorFun</p>
+      <p>
+      See RXSLT_Error(). Get the node and stylesheet information
+      correct.
+       See if we can throw an exception in R with the information from
+      the XSLT engine.
+      </p>
+
+</item>
+<item>
+   Show how to use R2HTML (see summary.x{s,m}l) and XML facilities for creating nodes.
+  <p>
+       See summary.xml/summary.xsl/summary.R for R2HTML.      
+  </p>
+
+</item>
+<item>
+ Example showing that we parse in R using xmlTreeParse() and
+       transform some nodes there and then pass the resulting tree to
+       xsltApplyStyleSheet() to mix two sets of rules.
+       Also, do the other way around, with xsltApplyStyleSheet() and
+       then process the resulting document in R.
+  <p> Can do this with xmlTreeParse() and then saving the result to a
+      string and passing back.
+       But if we use internal nodes, how do we modify these.
+       Can we remove a node in an internal node?  Yes - removeNodes()
+</p>
+</item>
+
+<item status="low">
+
+ Illustrate the use of a .Rprofile.
+<pre>
+  setenv R_PROFILE summary.R
+  ~/Rpackage/Sxslt/bin/Sxsltproc summary.xsl summary.xml
+</pre>
+  Better to make the document  completely self sufficient 
+  by putting this code into the XSL file , as a parameter or
+      variable
+      and reference  that or as a r:init node XML
+
+</item>
+<item>
+ Add facilities for dealing with XMLNodeRef, etc.
+<p>
+Shouldn't we just end up with XMLInternalNode objects?
+</p>
+</item>
+
+<item>
+ Return value can be a nodeset, node, attributes list, etc.
+</item>
+
+<item status="check">
+ Allow R to create a node set and return it.
+  <p> See the new version of the XML package for
+      this. Need to dereference these and convert
+      them to XPath.</p>
+
+</item>
+<item status="check">
+ Export XPath nodes, etc. as external pointers to R.
+  <p> Add functions/methods to manipulate them.</p>
+<p>
+     Nodeset, nodes, attributes done at the basic level.
+</p>
+<p>
+Need test cases.
+</p>
+
+</item>
+
+<item status="future">
+Allow the collection of XSL parameters to be attached as  a database in R.
+  <p> Or just allow R to get at them via some call.
+       Need to have the context pointer, etc.
+       Could use an RObjectTable. However the context disappears on completion.</p>
+</item>
+<item status="future">
+Extension <i>elements</i>, e.g. &amp;xsl:register, xsl:date, ...
+  <p> Later!  </p>
+</item>
+
+</items>
+</topic>
+</topics>

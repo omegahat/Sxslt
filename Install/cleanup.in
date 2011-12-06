@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cp src/Sxsltproc.bin @R_PACKAGE_DIR@/bin/
+chmod +x @R_PACKAGE_DIR@/bin/Sxsltproc
+cp src/@PKG_NAME@.so @R_PACKAGE_DIR@/libs
+
+if test ! -r @R_PACKAGE_DIR@/lib@PKG_NAME@.so ; then
+  ( cd @R_PACKAGE_DIR@ ; ln -s @PKG_NAME@.so lib@PKG_NAME@.so)
+fi
+
+
+

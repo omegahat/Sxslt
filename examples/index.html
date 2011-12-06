@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Examples for Sxslt</title>
+</head>
+
+<body>
+<h1>Examples for the Sxslt package</h1>
+
+<dl>
+
+  <dt>
+  <li> sqrt.xml &amp; sqrt.xsl<br>
+    <a href="sqrt.xml">lm.xml</a>, <a href="sqrt.xsl">sqrt.xsl</a>
+  <dd>  Simple example of calling R functions.
+      
+  <dt>
+  <li> Accessing nodes, nodesets, etc. in R.
+      <br>
+      <a href="summary.xml">summary.xml</a>,
+      <a href="summary.xsl">summary.xsl</a>,
+      <a href="summary.R">summary.R</a>.
+  <dd> These also illustrate how to generate HTML
+      content from within R (via the <a
+      href="http://cran.r-project.org/src/contrib/Descriptions/R2HTML.html">R2HTML</a> package
+      and insert it into the resulting XML document.
+      
+  <dt>
+  <li> Registering functions.
+      <br>
+      <a href="registration.R">registration.R</a>,
+      <a href="registration.xml">registration.xml</a>,
+      <a href="registration.xsl">registration.xsl</a>
+  <dd> Example of how to register XSL extension functions from
+       within R code after R has been started and the XSL
+       transformation is underway.
+<pre>
+ bin/Sxsltproc examples/register.xsl examples/node.xml
+</pre>
+
+      
+  <dt>
+  <li> lm.xml &amp; sqrt.xsl<br>
+    <a href="lm.xml">lm.xml</a>, <a href="sqrt.xsl">sqrt.xsl</a>
+      
+  <dd> A document that does some simple computations
+      and generates a histogram.
+      <pre>
+/tmp/R/pkg/Sxslt/bin/Sxsltproc -o lm.html sqrt.xsl lm.xml
+      </pre>
+</dl>
+
+
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Thu Dec 15 18:01:36 PST 2005
+<!-- hhmts end -->
+</body> </html>

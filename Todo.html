@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title>Todo List for Sxslt</title>
+</head>
+
+<body>
+<h1>Todo List for Sxslt</h1>
+
+<h2>Done</h2>
+
+<dl>
+
+  <dt>
+  <li> Parse an XSL stylesheet from text/memory rather than a file.
+  <dd>   
+    E.g. if we have it in memory via an HTTPS request, or if we
+      construct it dynamically.
+ <br>
+    [Done]  Fix up the parse code, but basically working using
+      xsltParseStylesheetDoc() routine.
+
+  
+  <dt>
+  <li>  voidEval() so that we can ignore the return value.
+  <dd> Done.
+
+  
+  <dt>
+  <li> Finish the quoting of parameters.
+  <dd>  Done - see fixQuotes
+
+  
+  <dt>
+  <li>  Add a .params argument to xsltApplyStyleSheet to be able to
+        specify the values as a list or character vector.
+      Done.
+  <dd> Allow for merging the ... and the .params.
+
+      
+  <dt>
+  <li> Allow function to be registered from R.
+       <font class="red">Same for variables/parameters.</font>
+      Done.
+      <p>
+       Ideally want to get rid of the global  transformCtxt pointer.
+      It is reset each time the extension is initialized and
+      reset to NULL when that use of the module is completed.
+      So it is "okay", but would be nice to remove it.
+      We have removed the need for it in some via the
+      function registration mechanism. So from within an R session,
+      it is not necessary. And for stand-alone use, i.e. Sxsltproc,
+      it is not really an issue.
+      <p>
+      <br>
+    
+  <dd>
+  Somehow, we may have to register the function before
+  processing the stylesheet. Turns out that this is not the problem.
+<br>
+  However, if we want to start R from the binary rather than the
+      stylesheet (often convenient)
+  such as when we are registering functions from R, we need a way to start R and run a script
+  before compiling the style-sheet.
+  This can be done using <code>--r=script/name/</code>
+      <p>
+      See the code in Sxsltproc.c.
+      Need to find a way to get the Transform context.
+      <p>
+    Also, need a way to get the name of the function being called.
+    Or some extra data that identifies the function.
+    See the functions.c code in libexslt in the libxslt distribution
+    and see if that relates to this notion.
+      <br>
+    Yep, we can get the function name. Now done.
+      <p>
+   Could use xmlHashTablePtr rather than a linked list.
+
+  
+  <dt>
+  <li> Classes on an XSLT stylesheet returned from xsltParseStyleSheet().
+  <dd>  Done.
+</dl>
+
+<hr>
+<address><a href="http://cm.bell-labs.com/stat/duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@research.bell-labs.com>&lt;duncan@research.bell-labs.com&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Tue Feb 12 08:51:49 NZDT 2008
+<!-- hhmts end -->
+</body> </html>

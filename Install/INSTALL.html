@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<h1>Installation Instructions</h1>
+
+These instructions for installing Sxslt have been gathered from
+experiences with Solaris and Linux, specifically Yellow Dog Linux.  In
+all cases, we have had a very up-to-date collection of Gnome tools and
+libxml (2.4.1) and libxslt (1.0.1) and higher.  We have not tried
+porting this to Windows yet at all.  Your mileage may vary and we
+would be very grateful to hear of any problems, patches for the
+configuration process, etc. so that others can benefit from
+the different experiences.
+
+
+<dl>
+  <dt>
+  <li>
+<i>Requirements</i><br>
+      Install libxslt version 1.0.1 or higher
+  <dd> This will require libxml2-2.4.*
+<br>
+     It is simplest if you do a full system installation of
+      libxml2 and then configure and compile libxslt.
+      You do not <i>need</i> to install libxslt, as this package
+      needs access to the  libxslt source code anyway in order
+      to compile some of the code.
+      However, if you do not install it,
+      you will have to set your LD_LIBRARY_PATH
+      environment variable to find the libxslt libraries.
+      So, the simplest thing to do is install libxslt
+      as well (and run /sbin/ldconfig or wherever it is on
+      your machine).
+      <p>
+
+       For those users who do not have root permissions with which to
+      install software in standard places on the system, the simplest
+      thing to do is to compile and install libxml2 and libxslt into
+      a sub-directory within one's own home directory. To do this,
+      for example into the directory <code>$HOME/local</code>,
+      specify the argument
+<pre>
+ --prefix='${HOME}/local'      
+</pre>
+      to the <code>configure</code> scripts for both libxml2 and
+      libxslt.
+      Then, run the commands
+      <code>make</code> and <code>make install</code> in both,
+      having added <code>$HOME/local/bin</code> to your path.
+      (This is needed when installing libxslt so that it can find
+       the <code>xml2-config</code> script needed to configure it.)
+      
+
+  <dt>
+  <li> <i>Telling Sxslt where libxslt is</i><br>
+      Set the environment variable <code>XSLT_HOME</code>
+      to the fully-qualified name of the directory in which
+      you un-tarred the libxslt distribution.
+      Alternatively, you can specify this directory as a command
+      line argument in the call to R CMD INSTALL as
+<pre>
+ --configure-args='--with-xslt=/the/directory'
+</pre>       
+      
+  <dd> That directory should contain the subdirectories
+      <code>libxslt</code>, <code>libexslt</code>
+      and <code>libxslt/.libs</code> and
+      <code>libexslt/.libs</code>.
+
+  <dt>
+  <li> Ensure that R is compiled as a shared library.
+  <dd>
+      
+  <dt>
+  <li> Install this R package in the usual manner
+  <dd>
+<pre>
+  R CMD INSTALL -c Sxslt
+</pre>      
+</dl>
+
+Note that in the future, we hope to be able to work from a fully
+installed version of libxslt. However, not all the header files that
+we need are installed during that process.  Specifically, we copy the
+C source code that runs <i>xsltproc</i> and modify it to load the R
+engine. That source file requires additional header files.  We hope to
+find a more elegant way to handle this in the near future.
+
+<hr>
+<address><a href="http://wald.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Sat Oct  6 08:15:19 EDT 2001
+<!-- hhmts end -->
+</body> </html>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<test xmlns:r="http://www.r-project.org"
+      xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+>
+
+This is a simple example of using an extension
+function in the R XSLT module which is registered in R
+rather than via the XSL code.
+This example is intended to be run from within R,
+in particular using the code in the associated
+registration.R file.
+That registers some R functions via the
+<r:func>addXSLTFunctions</r:func> function.
+These functions are registered with the R 
+extension module in XSLT each time 
+it is initialized and then become available to the
+XSL rules.  
+The registration.xsl accompanying this file
+then calls one of those extension functions
+when transforming the XML.
+
+The <r:func>addXSLTFunctions</r:func> does not
+register the functions with the extension module
+directly. Rather, it maintains them in R and
+waits for the module to be next initialized.
+When this occurs, an R function is called
+which performs the registration.
+This means 
+
+</test>

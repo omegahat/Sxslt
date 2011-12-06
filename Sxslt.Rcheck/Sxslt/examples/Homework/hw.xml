@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<exercises xmlns:r="http://www.r-project.org"
+           xmlns:xi="http://www.w3.org/2001/XInclude">
+
+
+<remark>
+When we load the XSL file and start the processing of the XML documentation
+with XSL, the template for our top-level node defines the function
+<r:func>randomizeNodes</r:func> which it will invoke to randomize the 
+question nodes.
+</remark>
+
+<remark>
+The examples illustrate the basics of XML and XSL.
+They also show the interaction between R and the XSL processor
+and calling R functions from XSL templates.
+We use XSL parameters and variables,
+import other XSL stylesheets, 
+use XPath and even axes within xpath expressions.
+We use XInclude and deferred XInclude
+
+</remark>
+
+<question numPoints="10">
+<title>Fibonacci Numbers</title>
+<para>
+Write a function to compute the first 10 Fibonacci numbers.
+</para>
+<solution>
+There are several ways to do this and some are faster than others.
+<r:code><![CDATA[
+fib = 
+function(n)
+{
+  if(n == 0 || n == 1)
+     return(1)
+
+  fib(n-1) + fib(n-2)
+}
+]]></r:code>
+</solution>
+</question>
+
+<question numPoints="3">
+<title>Numerical Summaries</title>
+<para>
+Read the following data into R as a data frame
+and create a numerical summary of the variables in the data frame.
+<data>
+<xi:include href="myData.txt" parse="text"/>
+</data>
+<remark>
+Here we use an XInclude. If we instruct the XSL processor to follow
+the XInclude directives, we will end up with a copy of the data in the
+document.  If we don't, then the XSL rules for the resulting
+xi:include nodes will provide a link to the data.  Can we do both?
+This is slightly tricky because it is the XML parser that does the
+XInclude. If we do it in the parsing stage, we don't see the
+xi:include node, but just what it is replaced by.  So we need to tell
+the XML parser not to do the XInclude, and then process that node so
+as to a) put the link to the URL, b) process the XInclude.  The XML
+package provides functions to do this.  Firstly, ensure that we
+process the XML document with <r:expr>xinclude = FALSE</r:expr>,
+e.g. 
+<r:code>
+xsltApplyStyleSheet("hw.xml", "hw.xsl", solutions = 0, xinclude = FALSE)
+</r:code>
+Next, provide an XSL template for xi:include which
+emits the link and then calls an R function
+which processes the XInclude node.
+</remark>
+</para>
+
+<solution>
+<r:code>
+data = read.table("http://www.omegahat.org/HW/myData.txt")
+summary(data)
+</r:code>
+</solution>
+</question>
+
+
+<question>
+<para>
+This has no title and you don't have to do much.
+But then again, you don't get many marks either!
+There are no solutions as the question seems vacuous and
+the numPoints attribute doesn't appear.
+</para>
+
+</question>
+
+<question numPoints="5">
+<para>
+Create an informative plot for the following data:
+<r:data r:format="dget" r:var="d">
+structure(list(x = 1:10, y = c(8.58146989277466, 12.0478462004630, 
+16.8235360430284, 21.7284811660330, 28.59736273056, 34.4060590670857, 
+37.066471856029, 43.5312485076099, 49.7638083326812, 50.9410207991281
+)), .Names = c("x", "y"), row.names = c(NA, -10L), class = "data.frame")
+</r:data>
+</para>
+
+
+<solution>
+<para>
+There are two variables and if we look at a scatter plot, we see that
+there is a linear relationship between them.
+So a scatterplot with a regression line would be reasonable.
+<center>
+<r:plot>
+plot(x, y)
+abline(lm(y ~ x))
+</r:plot>
+</center>
+</para>
+<remark>
+<para>
+We can reuse the XSL code from IDynDocs to generate a plot and create 
+the necessary output. 
+This is in IDynDocs/XSL/html.xsl and dynRfo.xsl, etc.
+There are minor issues about exporting those
+functions as they use different names within closures, etc.
+and so we need to sort that out first.
+Alternatively, we can just define a simple function ourselves.
+It will not be as general, e.g. dealing with 
+references to other r:code nodes within the body of this r:plot,
+but for our purposes it is quite simple.
+We can define an XSL rule that calls an
+R function defined as 
+<r:code eval="false">
+function(nodeset){
+    node = nodeset[[1]]
+    filename = tempfile()
+    jpeg(filename)
+    x = eval(parse(text = xmlValue(node)))
+    dev.off()
+    filename
+}
+</r:code>
+This is called with the r:plot node as the argument which appears as a
+XPathNodeset and so we fetch the first element which is the r:plot
+node.  We create a graphics device using the <r:func>jpeg</r:func> and
+return that file name. Here we use a random file name.  Using the
+<r:pkg>digest</r:pkg>, we can use a name that does not change unless
+the code in the r:plot node changes.
+</para>
+<para>
+We can either call this function from XSL via r:call('funName')
+or we can explicitly register the function via
+addXSLTFunctions() and then use the name with which we registered it.
+</para>
+<para>
+There is one remaining problem to be solved and that is how do we get
+the data for the r:plot code.  It is local to the question node, so we
+need to ensure that it is defined.  We'll ignore issues of scope,
+etc. and just load it into the global/session environment for now.  In
+the r:plot node, we arrange to load the data from any r:data within
+this question.  Since we are in the r:plot node within a question we
+need to go back to the question node and then find all the r:data
+nodes below it.  Here is where we use axes in XPath.  To find the
+enclosing question ancestor node, we use ancestor::question.  Then we
+can find all the r:data nodes below this as
+ancestor::question//r:data.  We pass the set of these to an R function
+that process each node and assigns the result of reading the data into
+R to a variable identified by the r:var attribute on that r:data node.
+
+</para>
+<para>
+We can solve the issue with scope and overwriting global variables by
+changing the way we deal with the data and passing it to the
+<r:func>graphicsEval</r:func> function.  The idea is that we will
+restore the data to an R object within the
+<r:func>graphicsEval</r:func> and then we will evaluate the code using
+the <r:func>with</r:func> function.  We use much of the same XSL code
+and the only difference is in the R code, as we should expect since this is really 
+an R evaluation issue.
+</para>
+<para>
+If we don't use this approach, we need to put the plotting
+code directly into the <r:func>with</r:func> call ourselves:
+<r:code eval="false">
+with(d,
+     { plot(x, y)
+       abline(lm(y ~ x))
+     })
+</r:code>
+Similarly, we need to have an r:var attribute on the r:data node.
+So, given the constraint that there is one data object
+(and node), this approach actually simplifies matters.
+</para>
+</remark>
+</solution>
+</question>
+
+
+</exercises>

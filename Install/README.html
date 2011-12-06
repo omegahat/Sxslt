@@ -1,0 +1,43 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+</head>
+
+<body>
+<h2>Testing Sxslt</h2>
+Find the location in which the package was installed.
+Let's suppose this is <i>/tmp/R/pkg</i>.
+Make certain that R can find this library (set the environment
+variable R_LIBS, if necessary).
+Then, 
+<pre>
+cd /tmp/R/pkg/Sxslt/examples
+../bin/Sxsltproc  node.xsl node.xml
+</pre>
+
+<pre>
+
+&lt;?xml version="1.0"?&gt;
+ 
+ This is a test of passing a node reference to R.  The node should
+have name
+ In test rule!
+ Initializing R: true
+ 
+ Evaluating expression: a
+ Evaluating expression: -0.37616412353231
+ Evaluating expression: true
+ Evaluating expression: false
+ Evaluating expression: 4
+ Evaluating expression: asXML
+ 
+ 
+ Calling rnorm: -0.21641221089206.
+</pre>
+<hr>
+<address><a href="http://www.stat.ucdavis.edu/~duncan">Duncan Temple Lang</a>
+<a href=mailto:duncan@wald.ucdavis.edu>&lt;duncan@wald.ucdavis.edu&gt;</a></address>
+<!-- hhmts start -->
+Last modified: Mon Aug 13 17:04:59 EDT 2001
+<!-- hhmts end -->
+</body> </html>

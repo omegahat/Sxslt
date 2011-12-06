@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<test>
+<sqrt>9</sqrt>
+<date/>
+<code>mean(rnorm(10000))</code>
+</test>
