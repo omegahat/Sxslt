@@ -1,9 +1,0 @@
-This is intended as a relatively simple example of XSL
-and also to cover and test some of the more advanced features
-such as "delayed" XInclude processing.
-
-It illustrates the basic structure of an XSL file
-with  
-   imports
-   params
-   templates

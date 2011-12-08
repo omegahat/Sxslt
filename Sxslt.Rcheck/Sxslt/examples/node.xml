@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-
-<doc>
- This is a test of passing a node reference to R.  The node should
- have name <test x="1" y="'asd'">with some additional <b>nodes</b></test>.
- There is another sentence that should appear.
- <kids><a/><b>b node with a value</b><c/></kids>
-</doc>
