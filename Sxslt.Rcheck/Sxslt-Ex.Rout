@@ -1,5 +1,5 @@
 
-R version 2.13.1 (2011-07-08)
+R Under development (unstable) (2011-11-27 r57757)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-apple-darwin11.0.0 (64-bit)
@@ -350,12 +350,12 @@ Now that we have created these 3 functions,
 let's call them.
 
 We can invoke the XSL function <i>date()</i>
-which returns Thu Nov 10 08:40:13 2011
+which returns Tue Dec  6 06:20:51 2011
 
 <p/>
 We can call the XSL function <i>Date()</i>
 which will call the R function <i class="sfunction">date()</i>.
-Thu Nov 10 08:40:13 2011
+Tue Dec  6 06:20:51 2011
 
 <p/>
 We next invoke the XSL function <i>search()</i>.
@@ -419,7 +419,7 @@ and returns the value as a suitable XSL object, when possible.
 $stylesheet
 An object of class "XSLStyleSheet"
 Slot "ref":
-<pointer: 0x7fc219430440>
+<pointer: 0x7ff76b6584c0>
 
 
 $status
@@ -555,194 +555,10 @@ detaching ‘package:XML’
 >     # A query to see which template handles article.
 >    #XXX Problem
 >   temp = getTemplate("http://www.omegahat.org/XDynDocs/XSL/html.xsl", "article")
-> 
->     # Query a node with a name space so have to create the node
->     # (The node does get copied as it has no document which is needed
->     # during the creation of the XSL context)
->   library(XML)
->   node = newXMLNode("r:code", namespaceDefinitions = c(r = "http://www.r-project.org"))
->   rcode = getTemplate("http://www.omegahat.org/XDynDocs/XSL/html.xsl", node)
-> 
->   rcode
-$stylesheet
-[1] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl"
-
-$match
-[1] "r:code|r:test"
-
-$name
-[1] "r-code"
-
-$node
-[1] "<xsl:template match=\"r:code|r:test\" name=\"r-code\">\n  <xsl:if test=\"$runCode and not(@eval='false') and function-available('r:evalNode') and not(ancestor::r:noeval)\">\n    <xsl:variable name=\"value\">\n      <xsl:copy-of select=\"r:evalNode(., string($targetFormat))\"/>\n    </xsl:variable>\n    <xsl:if test=\"not(@showOutput) or @showOutput != 'false'\">\n      <xsl:copy-of select=\"$value\"/>\n    </xsl:if>\n  </xsl:if>\n</xsl:template>"
-
-$priority
-[1] -12345789
-
-$mode
-character(0)
-
-$location
-/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl 
-                                                               56 
-
-attr(,"class")
-[1] "XSLCopiedTemplateDescription"
->   docName(rcode)
-[1] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl"
->   rcode$location
-/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/dynamic.xsl 
-                                                               56 
->   cat(rcode$node)
-<xsl:template match="r:code|r:test" name="r-code">
-  <xsl:if test="$runCode and not(@eval='false') and function-available('r:evalNode') and not(ancestor::r:noeval)">
-    <xsl:variable name="value">
-      <xsl:copy-of select="r:evalNode(., string($targetFormat))"/>
-    </xsl:variable>
-    <xsl:if test="not(@showOutput) or @showOutput != 'false'">
-      <xsl:copy-of select="$value"/>
-    </xsl:if>
-  </xsl:if>
-</xsl:template>>  
-> 
->     # Instead of parsing the style sheet each time, do it once and do
->     # multiple queries
->   html.sty = xsltParseStyleSheet("http://www.omegahat.org/XDynDocs/XSL/html.xsl")
-> 
->   rcode = getTemplate(html.sty, 
-+                       newXMLNode("r:code", namespaceDefinitions = c(r = "http://www.r-project.org")))
-> 
->   templates = lapply(c("latex", "docbook", "ulink"), function(x)  getTemplate(html.sty, x))
->   sapply(templates, docName)
-[1] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/OmegahatXSL/html/defs.xsl"            
-[2] "/Users/duncan/Classes/StatComputing/XDynDocs/inst/XSL/OmegahatXSL/common/RCommonDocbook.xsl"
-[3] "file:///Users/duncan/docbook-xsl-current/xhtml/docbook.xsl"                                 
-> 
-> 
-> 
-> cleanEx()
-
-detaching ‘package:XML’
-
-> nameEx("getXSLParams")
-> ### * getXSLParams
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: getXSLParams
-> ### Title: Extract the top-level XSL parameters and default values in an
-> ###   XSL stylesheet
-> ### Aliases: getXSLParams
-> ### Keywords: programming
-> 
-> ### ** Examples
-> 
->   system.file()
-[1] "/Users/duncan/Projects/R-2.13.1/build/library/base"
-> 
-> 
-> 
-> cleanEx()
-> nameEx("libxsltVersion")
-> ### * libxsltVersion
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: libxsltVersion
-> ### Title: Query the version of the libxslt library in use.
-> ### Aliases: libxsltVersion
-> ### Keywords: IO programming
-> 
-> ### ** Examples
-> 
->   libxsltVersion()
-major minor patch 
-    1     1    26 
-> 
-> 
-> 
-> cleanEx()
-> nameEx("registerXSLFunction")
-> ### * registerXSLFunction
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: registerXSLFunction
-> ### Title: Define an XSL extension function
-> ### Aliases: registerXSLFunction
-> ### Keywords: IO
-> 
-> ### ** Examples
-> 
-> ## Not run: 
-> ##D   registerXSLFunction("init", function(...) { TRUE })
-> ##D   registerXSLFunction("register", function(name, func) { TRUE })
-> ##D   registerXSLFunction("foo", function(x) { cat("in foo\n"); print(x) ; x*2})
-> ##D   registerXSLFunction("bar", function(x,y) { cat("in bar\n"); print(x) ; print(y) ; nchar(x) + nchar(y)})
-> ##D 
-> ##D   xsltApplyStyleSheet(system.file("examples", "register.xml", package = "Sxslt"),
-> ##D                       system.file("examples", "register.xsl", package = "Sxslt"), FALSE)
-> ## End(Not run)
-> 
-> 
-> 
-> cleanEx()
-> nameEx("registerXSLTExtension")
-> ### * registerXSLTExtension
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: registerXSLTExtension
-> ### Title: Register a new XSLT extension namespace
-> ### Aliases: registerXSLTExtension
-> ### Keywords: IO programming
-> 
-> ### ** Examples
-> 
-> 
->  library(XML)  # for xmlValue
->  e = new.env()
->  omgEval = function(node) {
-+     eval(parse(text = xmlValue(node)), e)
-+  }
->  environment(omgEval) = e
-> 
->  registerXSLTExtension(c("omg" = "http://www.omegahat.org"),
-+                        eval = omgEval)
-[1] TRUE
->   # now  any XSL file can call omg:eval() by
->   #  declaring the namespace http://www.omegahat.org
->   #  and adding it to the extension-element-prefixes
->   #  
-> 
-> 
-> 
-> cleanEx()
-
-detaching ‘package:XML’
-
-> nameEx("saveXML")
-> ### * saveXML
-> 
-> flush(stderr()); flush(stdout())
-> 
-> ### Name: saveXML.XMLInternalXSLTDocument
-> ### Title: Serializes XSLT-processed document to a file or string
-> ### Aliases: saveXML.XMLInternalXSLTDocument
-> ###   saveXML,XMLInternalXSLTDocument-method
-> ### Keywords: IO
-> 
-> ### ** Examples
-> 
->  library(XML)
-> 
->  doc <- xsltApplyStyleSheet(system.file("examples", "register.xml", package = "Sxslt"),
-+                             system.file("examples", "register.xsl", package = "Sxslt"), FALSE)
-registering date
-registering Date
-registering search
-[1] "In register.R"
-Error in registerXSLFunction("foo", function(x) { : 
-  NULL value for xslTransformContext. One cannot register an R function with XSLT when not applying an XSL style sheet.
-Calls: XSLParseEval ... eval.with.vis -> eval.with.vis -> registerXSLFunction -> .Call
+I/O warning : failed to load HTTP resource
+error
+xsltParseStylesheetFile : cannot parse http://www.omegahat.org/XDynDocs/XSL/html.xsl
+Error in xsltParseStyleSheet(ctxt) : 
+  Cannot parse XSL document http://www.omegahat.org/XDynDocs/XSL/html.xsl
+Calls: getTemplate -> getTemplate -> xsltParseStyleSheet -> .Call
 Execution halted

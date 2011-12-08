@@ -1,12 +1,13 @@
 * using log directory ‘/Users/duncan/Projects/org/omegahat/XML/XSL/S/libxslt/Sxslt.Rcheck’
-* using R version 2.13.1 (2011-07-08)
+* using R Under development (unstable) (2011-11-27 r57757)
 * using platform: x86_64-apple-darwin11.0.0 (64-bit)
 * using session charset: UTF-8
 * checking for file ‘Sxslt/DESCRIPTION’ ... OK
 * this is package ‘Sxslt’ version ‘0.91-1’
-* checking package name space information ... OK
+* checking package namespace information ... OK
 * checking package dependencies ... OK
 * checking if this is a source package ... OK
+* checking if there is a namespace ... OK
 * checking for executable files ... OK
 * checking whether package ‘Sxslt’ can be installed ... OK
 * checking installed package size ... OK
@@ -22,8 +23,8 @@
 * checking whether the package can be loaded ... OK
 * checking whether the package can be loaded with stated dependencies ... OK
 * checking whether the package can be unloaded cleanly ... OK
-* checking whether the name space can be loaded with stated dependencies ... OK
-* checking whether the name space can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
 * checking for unstated dependencies in R code ... OK
 * checking S3 generic/method consistency ... OK
 * checking replacement functions ... OK
@@ -57,27 +58,41 @@ prepare_Rd: xsltInsert.Rd:52: Dropping empty section \references
 * checking line endings in Makefiles ... OK
 * checking for portable compilation flags in Makevars ... OK
 * checking for portable use of $(BLAS_LIBS) and $(LAPACK_LIBS) ... OK
+* checking compiled code ... NOTE
+File ‘/Users/duncan/Projects/org/omegahat/XML/XSL/S/libxslt/Sxslt.Rcheck/Sxslt/libs/Sxslt.so’:
+  Found ‘___stderrp’, possibly from ‘stderr’ (C)
+
+Compiled code should not call functions which might terminate R
+nor write to stdout/stderr instead of to the console.  The
+detected symbols are linked into the code but might come from
+libraries and not actually be called.
+
+See ‘Writing portable packages’ in the ‘Writing R Extensions’
+manual.
 * checking examples ... ERROR
 Running examples in ‘Sxslt-Ex.R’ failed
 The error most likely occurred in:
 
-> ### Name: saveXML.XMLInternalXSLTDocument
-> ### Title: Serializes XSLT-processed document to a file or string
-> ### Aliases: saveXML.XMLInternalXSLTDocument
-> ###   saveXML,XMLInternalXSLTDocument-method
-> ### Keywords: IO
+> ### Name: getTemplate
+> ### Title: Find the template to process a node
+> ### Aliases: getTemplate getTemplate,XSLStyleSheet,character-method
+> ###   getTemplate,XSLStyleSheet,XMLInternalNode-method
+> ###   getTemplate,character,character-method
+> ###   getTemplate,character,XMLInternalNode-method
+> ###   getTemplate,XSLTTransformContext,XMLInternalNode-method
+> ###   getTemplate,XSLTTransformContext,missing-method
+> ### Keywords: IO programming
 > 
 > ### ** Examples
 > 
->  library(XML)
-> 
->  doc <- xsltApplyStyleSheet(system.file("examples", "register.xml", package = "Sxslt"),
-+                             system.file("examples", "register.xsl", package = "Sxslt"), FALSE)
-registering date
-registering Date
-registering search
-[1] "In register.R"
-Error in registerXSLFunction("foo", function(x) { : 
-  NULL value for xslTransformContext. One cannot register an R function with XSLT when not applying an XSL style sheet.
-Calls: XSLParseEval ... eval.with.vis -> eval.with.vis -> registerXSLFunction -> .Call
+>   
+>     # A query to see which template handles article.
+>    #XXX Problem
+>   temp = getTemplate("http://www.omegahat.org/XDynDocs/XSL/html.xsl", "article")
+I/O warning : failed to load HTTP resource
+error
+xsltParseStylesheetFile : cannot parse http://www.omegahat.org/XDynDocs/XSL/html.xsl
+Error in xsltParseStyleSheet(ctxt) : 
+  Cannot parse XSL document http://www.omegahat.org/XDynDocs/XSL/html.xsl
+Calls: getTemplate -> getTemplate -> xsltParseStyleSheet -> .Call
 Execution halted
