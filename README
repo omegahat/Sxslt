@@ -1,0 +1,5 @@
+For now, this is in its original form/structure as from the Omegahat version control repository.
+This means that to build the R package, one uses make files from Omegahat to stage the files
+in a different directory.  This is used for various reasons, including the ability to create
+R and S-Plus "packages" from the same source. It also allows us to reorganize the files
+as we want, and also to borrow files from other projects/packages in the repository.
