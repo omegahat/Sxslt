@@ -1,3 +1,8 @@
+I've reorganized to make this a regular R package.
+
+
+
+
 For now, this is in its original form/structure as from the Omegahat version control repository.
 This means that to build the R package, one uses make files from Omegahat to stage the files
 in a different directory.  This is used for various reasons, including the ability to create
