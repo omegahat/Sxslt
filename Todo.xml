@@ -14,6 +14,18 @@
 <items>
 
 <item>
+Segfaulting 
+<r:code>
+ext = xsltParseStyleSheet("~/Books/XMLTechnologies/extensions.xsl")
+getNodeLocation(getTemplate(ext, "XML")$node)
+getNodeLocation(getTemplate(ext, "XML")$node)
+getNodeLocation(getTemplate(ext, "XML")$node)
+getNodeLocation(getTemplate(ext, "XML")$node)
+getNodeLocation(getTemplate(ext, "XML")$node)
+</r:code>
+</item>
+
+<item>
 Release R objects that we preserve when returning across the R-XSL interface.
 </item>
 

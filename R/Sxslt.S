@@ -1,4 +1,4 @@
-xsltParseStyleSheet <-
+xsltParse <- xsltParseStyleSheet <-
 function(fileName, isURL = is(fileName, "character") && length(grep("^(http|ftp)", fileName)) > 0)
 {
     # if we are given an XMLInternalDocument, just pass that on to the C routine.

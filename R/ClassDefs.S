@@ -1,4 +1,6 @@
 setClass("XSLStyleSheet", representation(ref = "externalptr"))
+#setOldClass(c("XSLStyleSheet","XMLInternalDocument","XMLAbstractDocument"))
+            
 
 
 libxsltVersion =

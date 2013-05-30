@@ -15,7 +15,7 @@ export(docName)
 
 export(registerXSLFunction)
 #export(nodeElements)
-export(xsltApplyStyleSheet, xsltParseStyleSheet)
+export(xsltApplyStyleSheet, xsltParseStyleSheet, xsltParse)
 export(XSLParseEval, XSLParseEvalWithOutput, XSLNULLParseEval)
 export(XPathNodeSet)
 

@@ -1,5 +1,6 @@
 \name{xsltParseStyleSheet}
 \alias{xsltParseStyleSheet}
+\alias{xsltParse}
 \title{Read XSLT stylesheet into memory}
 \description{
   This uses Daniel Veillard's libxslt to read
