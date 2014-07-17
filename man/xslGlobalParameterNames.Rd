@@ -27,11 +27,8 @@ xslGlobalParameterNames(ctx)
 \value{
  A character vector giving the names of the XSL parameters.
 }
-\references{
-}
-\author{
-Duncan Temple Lang
-}
+%\references{}
+\author{Duncan Temple Lang}
 
 
 \seealso{

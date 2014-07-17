@@ -27,7 +27,7 @@ function(doc, xsl = character(), format = "fo",
         )
 {
   if(is.character(doc))
-     doc = xmlTreeParse(doc, useInternal = TRUE)
+     doc = xmlParse(doc)
 
   for(i in xpath) {
     sty = getNodeSet(doc, i, c(xsl= "http://www.w3.org/1999/XSL/Transform"))

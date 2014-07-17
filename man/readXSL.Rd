@@ -55,9 +55,7 @@ Duncan Temple Lang
 \seealso{
  \code{\link{xsltParseStyleSheet}}
 }
-\examples{
-
-}
+%\examples{}
 
 \keyword{programming}
 \concept{XSL}

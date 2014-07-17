@@ -18,7 +18,7 @@ function(cmd, className = NULL, asXML = FALSE, name = NULL, env = globalenv())
      }
 
      if(!is.null(name)) 
-       assign(name, x, env=globalenv())
+       assign(name, x, envir = globalenv())
 
      if(asXML)
        return(toXML(x))  # Where is this defined? In another package.
@@ -43,7 +43,7 @@ function(cmd, className=NULL, name=NULL, env = globalenv())
  expr <- parse(text = cmd)
  x <- eval(expr, env)
  if(!is.null(name)) {
-     assign(name, x, env=globalenv())
+     assign(name, x, envir = globalenv())
  }
 
  NULL 

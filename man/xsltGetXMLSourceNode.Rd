@@ -32,8 +32,7 @@ xsltGetXMLSourceNode(context)
  \code{\link{registerXSLFunction}}
  \code{XSLTContextFunction}
 }
-\examples{
-}
+%\examples{}
 \keyword{IO}
 \concept{XSL}
 

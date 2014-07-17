@@ -82,6 +82,9 @@ registerRModule(int fromR)
 */
 }
 
+
+
+#include <libexslt/exslt.h>
 /* 
   Called from within R.  This is used when we are not running
   in stand-alone mode, but within a regular R session and want 
@@ -121,14 +124,14 @@ RXSLT_Error(xmlXPathParserContextPtr ctxt, const char *msg, ...)
     xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, xsltXPathGetTransformContext(ctxt)->insert, buf);
 }
 
-/* This can go! */
 void
 RXSLT_Warning(xmlXPathParserContextPtr ctxt, const char *msg)
 {
 /*XXX */
 //    xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, xsltXPathGetTransformContext(ctxt)->insert, msg);
-    PROBLEM msg
-	WARN;
+    Rf_warning(msg);
+    /* PROBLEM msg
+       WARN; */
 }
 
 
@@ -401,11 +404,12 @@ RXSLT_init(xmlXPathParserContextPtr ctxt, int nargs)
 #endif
 
 
+
 int
 loadXSLPackage(void)
 {
   USER_OBJECT_ e, fun, tmp;
-  int error;
+  int isError;
 
   PROTECT(fun = Rf_findFun(Rf_install("library"), R_GlobalEnv));
   PROTECT(e = allocVector(LANGSXP, 2));
@@ -413,10 +417,13 @@ loadXSLPackage(void)
   SETCAR(e, fun);
   SETCAR(CDR(e), tmp = NEW_CHARACTER(1));
   SET_VECTOR_ELT(tmp, 0, COPY_TO_USER_STRING("Sxslt"));
-  R_tryEval(e, R_GlobalEnv, &error);
-  if(error) {
+  R_tryEval(e, R_GlobalEnv, &isError);
+  if(isError) {
+      Rf_error("Couldn't load Sxslt package. Check the setting of R_LIBS");
+/*
       fprintf(stderr, "Couldn't load Sxslt package. Check the setting of R_LIBS\n");
       fflush(stderr);
+*/
   }
 
    
@@ -428,8 +435,8 @@ loadXSLPackage(void)
 void
 RXSLT_callNamedFunction(const char *name, xmlXPathParserContextPtr ctxt, int nargs, int leaveAsRObject)
 {
-  USER_OBJECT_ tmp, e, ans, ptr;
-  xmlXPathObjectPtr obj;
+  USER_OBJECT_ e, ans;
+//  xmlXPathObjectPtr obj;
   int errorOccurred;
   int i, j;
 

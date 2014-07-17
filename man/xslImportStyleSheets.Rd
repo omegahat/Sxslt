@@ -28,9 +28,7 @@ xslImportStyleSheets(style, sheets, import = TRUE)
 \seealso{ 
  \code{\link{xsltParseStyleSheet}}
 }
-\examples{
-
-}
+%\examples{}
 \keyword{IO}
 \keyword{programming}
 \concept{XSL}

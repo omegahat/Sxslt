@@ -12,7 +12,7 @@ function(fileName, isURL = is(fileName, "character") && length(grep("^(http|ftp)
       else if(file.exists(fileName)) 
         fileName <- path.expand(fileName)
       else 
-        fileName <- xmlTreeParse(as.character(fileName), asText = TRUE, useInternalNodes = TRUE)
+        fileName <- xmlParse(as.character(fileName), asText = TRUE)
 
     } else
        stop("need an XMLInternalDocumet or a character vector")
@@ -168,7 +168,7 @@ setMethod("xsltApplyStyleSheet",
 
 
             if(!is.logical(.profile) || .profile ) {
-              doc = xmlTreeParse(fileName, useInternal = TRUE)
+              doc = xmlParse(fileName)
               return(xsltApplyStyleSheet(doc, sheet, isURL, xinclude, ..., .params = .params, .profile = .profile,
                                          .merge = .merge, .errorFun = .errorFun))
             }

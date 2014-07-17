@@ -66,8 +66,7 @@ XPathNodeSet(..., els = list(...), duplicate = FALSE)
   give us the latter and these can be useful if we want to modify 
   the C-level data structures rather than just query their values.}
 }
-\value{
-}
+%\value{}
 \references{
   \url{http://www.omegahat.org/Sxslt},
   \url{http://www.omegahat.org/SXalan},
@@ -83,8 +82,7 @@ Duncan Temple Lang
 \code{node.xsl}, \code{node.xml} and \code{ok.R} in the examples directory.
 }
 
-\examples{
-}
+%\examples{}
 
 \keyword{IO}
 \concept{XML}

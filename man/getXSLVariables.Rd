@@ -44,9 +44,7 @@ getXSLVariables(ctxt, vars, uris = names(vars),
   \code{\link{registerXSLFunction}}
   \code{XSLTContextFunction}
 }
-\examples{
-  
-}
+%\examples{ }
 
 \keyword{IO}
 \keyword{programming}

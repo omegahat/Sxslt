@@ -21,9 +21,6 @@ processXSLXInclude(node)
   \item{node}{an XPathNodeSet, typically passed from an XSL template
   rule that calls this R function}
 }
-\details{
-
-}
 \value{
  A reference to a C-level/internal XPathNodeSet object which contains
  the nodes that were the result of performing the XInclude substitution.
@@ -33,11 +30,8 @@ libxslt
 XInclude}
 
 
-\seealso{
- }
-\examples{
-
-}
+%\seealso{}
+%\examples{}
 
 \keyword{IO}
 \keyword{programming}

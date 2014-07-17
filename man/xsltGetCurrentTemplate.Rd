@@ -50,9 +50,7 @@ xsltGetCurrentInputNode(ctx)
 \seealso{
  \code{\link{xsltApplyStyleSheet}}
 }
-\examples{
-
-}
+%\examples{}
 \keyword{IO}
 \keyword{programming}
 \concept{XML}

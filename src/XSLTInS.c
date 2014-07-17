@@ -59,15 +59,21 @@ void R_xsltFreeStylesheet(SEXP ref)
 {
     xsltStylesheetPtr ptr = (xsltStylesheetPtr) R_ExternalPtrAddr(ref);
     if(ptr) {
-
+#ifdef XSLT_DEBUG
+fprintf(stderr, " freeing xsltStylesheet:  %p\n", ptr);
+#endif
 	    const xmlChar *url;
 	    if(ptr->doc == (xmlDocPtr) 0xffffffff) {
+#ifdef XSLT_DEBUG
 		    fprintf(stderr, "Seem to be freeing a style sheet (%p) for a second time\n", ptr);
+#endif
 		    return;
 	    }
 	    url = ptr->doc && ptr->doc->URL ? ptr->doc->URL : (ptr->doc->name  ? ptr->doc->name : BAD_CAST( "" ) );
 	    if(ptr->_private && ptr->_private == R_NilValue) {
+#ifdef XSLT_DEBUG
 		    fprintf(stderr, "stylesheet %p which doesn't own its doc (%s)\n", (void *) ptr, url);
+#endif
 		    ptr->doc = NULL;
 	    }
 #ifdef XSLT_DEBUG
@@ -401,13 +407,11 @@ S_saveXMLDocToString(USER_OBJECT_ sdoc, USER_OBJECT_ encodingStyle)
   sheet = S_resolveStyleSheetRef(VECTOR_ELT(sdoc, 1));
 
   if((status = xsltSaveResultTo(buf, doc, sheet)) < 0) {
-     PROBLEM "error writing to buffer"
-     ERROR;
+      Rf_error("error writing to buffer");
   }
 
   if(!sbuf.str) {
-     PROBLEM "no content in the document"
-     ERROR;
+     Rf_error("no content in the document");
   }
 
   PROTECT(ans = NEW_CHARACTER(1));
@@ -711,6 +715,7 @@ RXSLT_applyTemplates(USER_OBJECT_ r_ctxt, USER_OBJECT_ snode, USER_OBJECT_ sinst
 
     if(1) {
 	xsltStylePreCompPtr tmp;
+//	xsltElemPrePreCompPtr tmp;
 	tmp = ctxt->style->preComps;
 	while(tmp) {
 	    if(tmp->inst == inst) {
@@ -916,6 +921,7 @@ R_xsltFreeTransformContext(SEXP obj)
   xsltTransformContextPtr ptr;
   ptr = (xsltTransformContextPtr) R_ExternalPtrAddr(obj);
   if(ptr) {
+//fprintf(stderr, " freeing xsltTransformContext:  %p\n", ptr);
       xsltFreeTransformContext(ptr);
       R_ClearExternalPtr(obj);
   }

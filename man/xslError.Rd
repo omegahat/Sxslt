@@ -23,9 +23,7 @@ xslStop(ctxt)
   \item{context,ctxt}{the XMLXPathParserContext object that is passed
   to the function to provide information about the XSL transformation context.}
 }
-\details{
- 
-}
+%\details{}
 \value{
   These functions are of interest for their side effect on the
   C-level XSL processing
@@ -36,9 +34,7 @@ xslStop(ctxt)
 \seealso{
 \code{\link{xsltApplyStyleSheet}}
 }
-\examples{
-
-}
+%\examples{}
 \keyword{IO}
 \keyword{programming}
 \concept{XSL}

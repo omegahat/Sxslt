@@ -1,1 +1,1 @@
-../../SWinRegistry/RSCommon.h
+../../XML/src/RSCommon.h

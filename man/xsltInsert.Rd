@@ -49,7 +49,7 @@ xsltGetInsertNode(ctx)
 \value{
  \code{NULL}
 }
-\references{}
+%\references{}
 \author{Duncan Temple Lang}
 \seealso{
   \code{\link{xsltContextFunction}}

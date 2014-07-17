@@ -75,9 +75,7 @@ xsltCallTemplate(ctx, node, template, ..., .params = list(...))
   applyTemplates.R,   applyTemplates.xsl
   and   applyTemplates.xml in the examples directory.  
 }
-\examples{
-
-}
+%\examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
 \keyword{IO}

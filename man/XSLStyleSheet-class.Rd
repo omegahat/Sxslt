@@ -42,7 +42,5 @@
  \code{\link{xsltParseStyleSheet}}
   
 }
-\examples{
-
-}
+%\examples{}
 \keyword{classes}

@@ -12,6 +12,9 @@
 <title>XML Internal Nodes</title>
 
 <items>
+<item>
+Implement getXSLImports. See ~/xmlTree.R and xmlTree-2.R. from Paul M.
+</item>
 
 <item>
 Segfaulting 

@@ -116,8 +116,10 @@ convertToXPath(xmlXPathParserContextPtr ctxt, USER_OBJECT_ ans)
 	      val = NULL;
 	}
 
-	if(!val) 
-	   fprintf(stderr, "Unhandled R type being converted to XSL\n");fflush(stderr);
+	if(!val) {
+	    Rf_warning("Unhandled R type being converted to XSL");
+//	   fprintf(stderr, "Unhandled R type being converted to XSL\n");fflush(stderr);
+	}
 
     } else {
 #if 0
