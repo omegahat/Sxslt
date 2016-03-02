@@ -80,9 +80,9 @@ setMethod("[[", "XPathNodeSet",
 
 if(!SkipS4Problem) {
 if(!isGeneric("unlist"))
-  setGeneric("unlist",
+  try(setGeneric("unlist",
               function (x, recursive = TRUE, use.names = TRUE)  
-                 standardGeneric("unlist"))
+                 standardGeneric("unlist")), silent = TRUE)
 
 setMethod("unlist", "XPathNodeSet",
            function (x, recursive = TRUE, use.names = TRUE)  {

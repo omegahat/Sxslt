@@ -1,5 +1,5 @@
 Package: Sxslt
-Version: 0.91-3
+Version: 0.91-4
 Title: R interface to libxslt
 Author:  Duncan Temple Lang 
 Depends: R (>= 1.3.0) 
