@@ -1,3 +1,10 @@
 I've reorganized to make this a regular R package amenable to
   R CMD INSTALL .
 
+
+It should also now work with 
+  install_github()
+
+as I've copied the very central file RSCommon.h from the XML package.
+
+
