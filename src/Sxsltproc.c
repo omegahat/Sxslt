@@ -121,7 +121,7 @@ RXSLT_Error(xmlXPathParserContextPtr ctxt, const char *msg, ...)
     va_start(args, msg);
     vsnprintf(buf, 5000, msg, args);
 
-    xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, xsltXPathGetTransformContext(ctxt)->insert, buf);
+    xsltTransformError(xsltXPathGetTransformContext(ctxt), NULL, xsltXPathGetTransformContext(ctxt)->insert, "%s", buf);
 }
 
 void
