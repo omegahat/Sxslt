@@ -99,7 +99,7 @@ function(uri, ctxt)
 
             if(!is.function(f)) {
               warning('not registering non-function ', id)
-              next
+              return(NULL)
             }
             
             if(inherits(f, "ClosureGenerator")) {
